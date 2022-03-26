@@ -22,10 +22,10 @@ const Discover: React.FC = () => {
             placeholder="Search"
             value={search}
             returnKeyType="search"
-            onChangeText={text => setSearch(text)}
+            onChangeText={(text: string) => setSearch(text)}
           />
         </Search>
-        <Ionicons name="md-qr-scanner" size={25} color="black" />
+        <Ionicons size={25} color="black" />
       </Header>
     </Container>
   );

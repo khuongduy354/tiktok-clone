@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { globalConfig } from '../../../global';
 import { View } from 'react-native';
 
 import ViewPager from '@react-native-community/viewpager';

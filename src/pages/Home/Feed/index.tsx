@@ -22,13 +22,19 @@ import {
 
 interface Item {
   id: number;
-  username: string;
-  tags: string;
-  music: string;
-  likes: number;
-  comments: number;
+  email: string;
+  title: string;
+  likes: Array<number>;
+  comments: Array<Comment>;
   uri: string;
+  public: boolean;
 }
+
+type Comment = {
+  content: string;
+  user_id: number;
+  created_at: string;
+};
 
 interface Props {
   play: boolean;
@@ -80,11 +86,10 @@ const Feed: React.FC<Props> = ({ play, item }) => {
         />
       </Container>
       <Details>
-        <User>{item.username}</User>
-        <Tags>{item.tags}</Tags>
+        <User>{item.email}</User>
         <MusicBox>
           <FontAwesome name="music" size={15} color="#f5f5f5" />
-          <Music>{item.music}</Music>
+          <Music>{item.title}</Music>
         </MusicBox>
       </Details>
       <Actions>
@@ -95,7 +100,7 @@ const Feed: React.FC<Props> = ({ play, item }) => {
             size={35}
             color="#fff"
           />
-          <TextAction>{item.likes}</TextAction>
+          <TextAction>{item.likes.length}</TextAction>
         </BoxAction>
         <BoxAction>
           <FontAwesome
@@ -104,16 +109,7 @@ const Feed: React.FC<Props> = ({ play, item }) => {
             size={35}
             color="#fff"
           />
-          <TextAction>{item.comments}</TextAction>
-        </BoxAction>
-        <BoxAction>
-          <FontAwesome
-            style={{ alignSelf: 'center' }}
-            name="whatsapp"
-            size={35}
-            color="#06d755"
-          />
-          <TextAction>Share</TextAction>
+          <TextAction>{item.comments.length}</TextAction>
         </BoxAction>
         <BoxAction>
           <Animated.View
@@ -121,11 +117,6 @@ const Feed: React.FC<Props> = ({ play, item }) => {
               borderRadius: 50,
               borderWidth: 12,
               borderColor: '#292929',
-              transform: [
-                {
-                  rotate: play ? rotateProp : 0,
-                },
-              ],
             }}
           >
             <Image
@@ -135,7 +126,8 @@ const Feed: React.FC<Props> = ({ play, item }) => {
                 borderRadius: 25,
               }}
               source={{
-                uri: 'https://avatars3.githubusercontent.com/u/45601574',
+                uri:
+                  'https://th.bing.com/th/id/R.5423477a17d752e99d68047743d9de11?rik=5BK8zmsuAHk2fw&riu=http%3a%2f%2fcliparts.co%2fcliparts%2f8TE%2f48G%2f8TE48GETa.jpg&ehk=Be0xy8WENPNv62qEV8lk%2brJNaV%2bXKc3l73g5Uzew0%2f8%3d&risl=&pid=ImgRaw&r=0',
               }}
             />
           </Animated.View>

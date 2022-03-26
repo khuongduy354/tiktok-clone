@@ -2,21 +2,25 @@
   "feed": [
     {
       "id": 0,
-      "username": "@matheuscastroweb",
-      "tags": "#testvideo #reactnative #tiktok #git #development #github #clone #react",
-      "music": "Introducing Chromecast. The easiest way to enjoy",
-      "likes": 9444,
-      "comments": 6340,
-      "uri": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
+      "email": "@matheuscastroweb",
+      "title": "Introducing Chromecast. The easiest way to enjoy",
+      "likes": [1, 2, 3, 4, 5],
+      "comments": [
+        { "user_id": 1, "content": "sadfas", "created_at": "asdas" }
+      ],
+      "uri": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+      "public": true
     },
     {
       "id": 1,
-      "username": "@matheuscastroweb",
-      "tags": "#reactnative #testvideo #tiktok #git #development #github #clone #react",
-      "music": "HBO GO now works with Chromecast",
-      "likes": 8411,
-      "comments": 2240,
-      "uri": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+      "email": "@matheuscastroweb",
+      "title": "HBO GO now works with Chromecast",
+      "likes": [1, 2, 3, 4],
+      "comments": [
+        { "user_id": 1, "content": "sadfas", "created_at": "asdas" }
+      ],
+      "uri": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+      "public": true
     }
   ]
 }
