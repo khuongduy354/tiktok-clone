@@ -15,6 +15,7 @@ import Home from '../pages/Home';
 import Inbox from '../pages/Inbox';
 import Me from '../pages/Me';
 import Record from '../pages/Record';
+import UploadVid from '../pages/Record/UploadVid';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -107,6 +108,16 @@ const AppRoutes: React.FC = () => {
           tabBarLabel: 'Me',
           tabBarIcon: ({ color }) => (
             <AntDesign name="user" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Upload"
+        component={UploadVid}
+        options={{
+          tabBarLabel: 'Upload',
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="upload" size={24} color={color} />
           ),
         }}
       />

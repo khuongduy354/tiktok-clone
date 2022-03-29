@@ -4,12 +4,30 @@ import { View } from 'react-native';
 
 import ViewPager from '@react-native-community/viewpager';
 
-import server from '../../../server.json';
+import mock_server from '../../../server.json';
 import Feed from './Feed';
 
 import { Container, Header, Text, Tab, Separator } from './styles';
+import { setVideoData } from '../../helper/setVideo';
 
 const Home: React.FC = () => {
+  const [server, setServer] = useState(mock_server);
+  useEffect(() => {
+    const func_ = async () => {
+      const result = await fetch(globalConfig.API_URL + '/video/feed/all');
+      if (result.ok) {
+        const data = await result.json();
+        let feedData = [];
+        for (let video of data.feed) {
+          const resultObj = setVideoData(video as any);
+          feedData.push(resultObj);
+        }
+        // console.log(feedData);
+        setServer({ feed: feedData });
+      }
+    };
+    func_();
+  }, []);
   const [tab, setTab] = useState(1);
   const [active, setActive] = useState(0);
   return (
