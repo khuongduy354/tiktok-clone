@@ -5,8 +5,11 @@ import { globalConfig } from '../../../global';
 import * as ImagePicker from 'expo-image-picker';
 import { Container } from './styles';
 import { addVideoProp } from '../../@types/VideoType';
+import { TextInput } from 'react-native-paper';
 
-const UploadVid = ({ author_id, title, _public = true }: addVideoProp) => {
+//@ts-ignore
+const UploadVid = ({ email, _public = true, isLoggedIn }: addVideoProp) => {
+  const [title, setTitle] = useState('');
   useEffect(() => {
     (async () => {
       const {
@@ -32,14 +35,11 @@ const UploadVid = ({ author_id, title, _public = true }: addVideoProp) => {
         //@ts-ignore
         type: 'video/mp4',
       };
-      const userProp: addVideoProp = {
-        author_id,
-        title,
-        _public,
-      };
+
       //@ts-ignore
       formData.append('videoFile', obj);
-      formData.append('userProp', JSON.stringify(userProp));
+      formData.append('title', JSON.stringify(email));
+      formData.append('email', JSON.stringify(email));
 
       fetch(globalConfig.API_URL + '/video', {
         method: 'POST',
@@ -58,7 +58,6 @@ const UploadVid = ({ author_id, title, _public = true }: addVideoProp) => {
         aspect: [4, 3],
         quality: 1,
       });
-      console.log(result);
       setVideo(result as any);
       //@ts-ignore
       uploadVideo(result);
@@ -67,15 +66,20 @@ const UploadVid = ({ author_id, title, _public = true }: addVideoProp) => {
     }
   };
   return (
-    <Container>
-      <TouchableOpacity onPress={() => selectVideo()}>
-        <MaterialIcons
-          name="arrow-drop-down"
-          size={100}
-          color={video ? '#fff' : '#6200ee'}
+    isLoggedIn &&
+    email && (
+      <Container style={{ marginTop: 50 }}>
+        <TouchableOpacity onPress={() => selectVideo()}>
+          <MaterialIcons name="attach-file" size={50} color={'black'} />
+        </TouchableOpacity>
+        <TextInput
+          style={{ marginTop: 20 }}
+          onChangeText={setTitle}
+          value={title}
+          placeholder="Caption here"
         />
-      </TouchableOpacity>
-    </Container>
+      </Container>
+    )
   );
 };
 

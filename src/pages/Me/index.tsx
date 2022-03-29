@@ -22,8 +22,8 @@ import {
 import { globalConfig } from '../../../global';
 import { TextInput } from 'react-native-paper';
 
-const Me: React.FC = () => {
-  const [email, setEmail] = useState('');
+//@ts-ignore
+const Me: React.FC = ({ email, setEmail, isLoggedIn, setIsLoggedIn }) => {
   const [tempPassword, setTempPassword] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -32,7 +32,6 @@ const Me: React.FC = () => {
   const [followings, setFollowings] = useState(0);
   const [followers, setFollowers] = useState(0);
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [signupMode, setSignupMode] = useState(true);
 
   const setUserData = (user: UserType) => {

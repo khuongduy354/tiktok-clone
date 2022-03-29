@@ -22,6 +22,8 @@ const Stack = createStackNavigator();
 
 const AppRoutes: React.FC = () => {
   const [home, setHome] = useState(true);
+  const [email, setEmail] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   StatusBar.setBarStyle('dark-content');
 
@@ -103,7 +105,15 @@ const AppRoutes: React.FC = () => {
       />
       <Tab.Screen
         name="Me"
-        component={Me}
+        children={() => (
+          <Me
+            //@ts-ignore
+            email={email}
+            setEmail={setEmail}
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+          />
+        )}
         options={{
           tabBarLabel: 'Me',
           tabBarIcon: ({ color }) => (
@@ -113,7 +123,13 @@ const AppRoutes: React.FC = () => {
       />
       <Tab.Screen
         name="Upload"
-        component={UploadVid}
+        children={() => (
+          <UploadVid
+            //@ts-ignore
+            email={email}
+            isLoggedIn={isLoggedIn}
+          />
+        )}
         options={{
           tabBarLabel: 'Upload',
           tabBarIcon: ({ color }) => (

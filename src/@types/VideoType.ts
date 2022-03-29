@@ -1,5 +1,5 @@
 export type addVideoProp = {
-  author_id: number;
+  email: number;
   title: string;
   _public?: boolean;
 };

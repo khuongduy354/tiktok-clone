@@ -22,7 +22,7 @@ const Home: React.FC = () => {
           const resultObj = setVideoData(video as any);
           feedData.push(resultObj);
         }
-        // console.log(feedData);
+        console.log(feedData);
         setServer({ feed: feedData });
       }
     };
@@ -51,7 +51,7 @@ const Home: React.FC = () => {
       >
         {server.feed.map(item => (
           <View key={item.id}>
-            <Feed item={item} play={Number(item.id) === active} />
+            <Feed item={item} play={true} />
           </View>
         ))}
       </ViewPager>
