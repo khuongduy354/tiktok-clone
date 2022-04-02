@@ -23,6 +23,7 @@ const Stack = createStackNavigator();
 const AppRoutes: React.FC = () => {
   const [home, setHome] = useState(true);
   const [email, setEmail] = useState('');
+  const [userId, setUserId] = useState(-1);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   StatusBar.setBarStyle('dark-content');
@@ -50,7 +51,13 @@ const AppRoutes: React.FC = () => {
     >
       <Tab.Screen
         name="Home"
-        component={Home}
+        children={() => (
+          <Home
+            //@ts-ignore
+            email={email}
+            userId={userId}
+          />
+        )}
         listeners={{
           focus: () => setHome(true),
           blur: () => setHome(false),
@@ -73,17 +80,14 @@ const AppRoutes: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name="Live"
-        component={Record}
-        listeners={({ navigation }) => ({
-          tabPress: e => {
-            // Prevent default action
-            e.preventDefault();
-
-            // Do something with the `navigation` object
-            navigation.navigate('Record');
-          },
-        })}
+        name="Upload"
+        children={() => (
+          <UploadVid
+            //@ts-ignore
+            email={email}
+            isLoggedIn={isLoggedIn}
+          />
+        )}
         options={{
           tabBarLabel: '',
           tabBarIcon: () => <HomeButtom home={home} />,
@@ -112,28 +116,13 @@ const AppRoutes: React.FC = () => {
             setEmail={setEmail}
             isLoggedIn={isLoggedIn}
             setIsLoggedIn={setIsLoggedIn}
+            setUserId={setUserId}
           />
         )}
         options={{
           tabBarLabel: 'Me',
           tabBarIcon: ({ color }) => (
             <AntDesign name="user" size={24} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Upload"
-        children={() => (
-          <UploadVid
-            //@ts-ignore
-            email={email}
-            isLoggedIn={isLoggedIn}
-          />
-        )}
-        options={{
-          tabBarLabel: 'Upload',
-          tabBarIcon: ({ color }) => (
-            <AntDesign name="upload" size={24} color={color} />
           ),
         }}
       />

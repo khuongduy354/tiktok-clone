@@ -22,8 +22,21 @@ import {
 import { globalConfig } from '../../../global';
 import { TextInput } from 'react-native-paper';
 
-//@ts-ignore
-const Me: React.FC = ({ email, setEmail, isLoggedIn, setIsLoggedIn }) => {
+type MeProps = {
+  email: string;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  isLoggedIn: boolean;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setUserId: React.Dispatch<React.SetStateAction<number>>;
+};
+
+const Me: React.FC<MeProps> = ({
+  email,
+  setEmail,
+  isLoggedIn,
+  setIsLoggedIn,
+  setUserId,
+}) => {
   const [tempPassword, setTempPassword] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -40,6 +53,7 @@ const Me: React.FC = ({ email, setEmail, isLoggedIn, setIsLoggedIn }) => {
     setFollowers(user.followingState.followers.length);
     setFollowings(user.followingState.followings.length);
     setUsername(user.name);
+    setUserId(user.id);
   };
   const getVideo = () => {};
   const login = () => {
@@ -47,13 +61,11 @@ const Me: React.FC = ({ email, setEmail, isLoggedIn, setIsLoggedIn }) => {
       const dest = globalConfig.API_URL + '/user/' + `${email}`;
       const res = await fetch(dest);
       if (res.ok) {
-        console.log('ok');
         const data = await res.json();
-        console.log(data);
         const user = data.user;
-        console.log(user);
         setUserData(user);
         setIsLoggedIn(true);
+        console.log('ok');
       }
     };
     _function();
@@ -82,6 +94,7 @@ const Me: React.FC = ({ email, setEmail, isLoggedIn, setIsLoggedIn }) => {
             const user = data.user;
             setIsLoggedIn(true);
             setUserData(user);
+            console.log('ok');
           }
         }
       }

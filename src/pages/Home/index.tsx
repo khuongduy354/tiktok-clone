@@ -10,8 +10,9 @@ import Feed from './Feed';
 import { Container, Header, Text, Tab, Separator } from './styles';
 import { setVideoData } from '../../helper/setVideo';
 
-const Home: React.FC = () => {
+const Home: React.FC = ({ email, userId }: any) => {
   const [server, setServer] = useState(mock_server);
+
   useEffect(() => {
     const func_ = async () => {
       const result = await fetch(globalConfig.API_URL + '/video/feed/all');
@@ -22,14 +23,16 @@ const Home: React.FC = () => {
           const resultObj = setVideoData(video as any);
           feedData.push(resultObj);
         }
-        console.log(feedData);
+        // console.log(feedData);
         setServer({ feed: feedData });
+        console.log('ok');
       }
     };
     func_();
   }, []);
   const [tab, setTab] = useState(1);
   const [active, setActive] = useState(0);
+
   return (
     <Container>
       <Header>
@@ -49,9 +52,9 @@ const Home: React.FC = () => {
         style={{ flex: 1 }}
         initialPage={0}
       >
-        {server.feed.map(item => (
+        {server.feed.map((item, index) => (
           <View key={item.id}>
-            <Feed item={item} play={true} />
+            <Feed userId={userId} item={item} play={index === active} />
           </View>
         ))}
       </ViewPager>

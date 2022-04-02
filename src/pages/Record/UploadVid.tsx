@@ -39,7 +39,7 @@ const UploadVid = ({ email, _public = true, isLoggedIn }: addVideoProp) => {
       //@ts-ignore
       formData.append('videoFile', obj);
       formData.append('title', JSON.stringify(email));
-      formData.append('email', JSON.stringify(email));
+      formData.append('email', JSON.stringify(title));
 
       fetch(globalConfig.API_URL + '/video', {
         method: 'POST',

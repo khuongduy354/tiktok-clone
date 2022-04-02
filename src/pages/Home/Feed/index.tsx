@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, Animated, Easing } from 'react-native';
 
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
@@ -19,6 +19,7 @@ import {
   BoxAction,
   TextAction,
 } from './styles';
+import { globalConfig } from '../../../../global';
 
 interface Item {
   id: number;
@@ -39,10 +40,38 @@ type Comment = {
 interface Props {
   play: boolean;
   item: Item;
-}
 
-const Feed: React.FC<Props> = ({ play, item }) => {
+  userId: number;
+}
+const Feed: React.FC<Props> = ({ play, item, userId }) => {
   const spinValue = new Animated.Value(0);
+  const [isLiked, setIsLiked] = useState(item.likes.includes(userId));
+  const [likes, setLikes] = useState(item.likes);
+  const handleLike = () => {
+    const _function = async () => {
+      const dest = globalConfig.API_URL + '/video/like';
+      const options = {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ author_id: userId, video_id: item.id }),
+      };
+      const res = await fetch(dest, options);
+      if (res.ok) {
+        const dest = globalConfig.API_URL + '/video' + `/${item.id}`;
+        let result = await fetch(dest);
+        result = await result.json();
+        //@ts-ignore
+        const likeArr = result.video.hearts.filter(heart => heart !== null);
+        setLikes(likeArr);
+
+        //@ts-ignore
+        setIsLiked(result.video.hearts.includes(userId));
+      }
+    };
+    _function();
+  };
 
   Animated.loop(
     Animated.timing(spinValue, {
@@ -95,12 +124,13 @@ const Feed: React.FC<Props> = ({ play, item }) => {
       <Actions>
         <BoxAction>
           <AntDesign
+            onPress={handleLike}
             style={{ alignSelf: 'center' }}
             name="heart"
             size={35}
-            color="#fff"
+            color={`${isLiked ? '#F56D91' : '#fff'}`}
           />
-          <TextAction>{item.likes.length}</TextAction>
+          <TextAction>{likes.length}</TextAction>
         </BoxAction>
         <BoxAction>
           <FontAwesome
