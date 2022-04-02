@@ -49,6 +49,8 @@ const Feed: React.FC<Props> = ({ play, item, userId }) => {
   const [likes, setLikes] = useState(item.likes);
   const handleLike = () => {
     const _function = async () => {
+      //@ts-ignore
+      setIsLiked(!isLiked);
       const dest = globalConfig.API_URL + '/video/like';
       const options = {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
