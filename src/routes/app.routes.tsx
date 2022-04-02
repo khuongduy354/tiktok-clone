@@ -56,6 +56,7 @@ const AppRoutes: React.FC = () => {
             //@ts-ignore
             email={email}
             userId={userId}
+            isLoggedIn={isLoggedIn}
           />
         )}
         listeners={{

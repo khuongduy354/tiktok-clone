@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Image, Animated, Easing } from 'react-native';
+import Comment from '../Comment/list';
 
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
 import { Video } from 'expo-av';
@@ -31,7 +32,7 @@ interface Item {
   public: boolean;
 }
 
-type Comment = {
+type CommentProp = {
   content: string;
   user_id: number;
   created_at: string;
@@ -40,14 +41,24 @@ type Comment = {
 interface Props {
   play: boolean;
   item: Item;
-
+  comments: any;
   userId: number;
+  isLoggedIn: boolean;
 }
-const Feed: React.FC<Props> = ({ play, item, userId }) => {
+const Feed: React.FC<Props> = ({
+  play,
+  item,
+  userId,
+  comments,
+  isLoggedIn,
+}) => {
   const spinValue = new Animated.Value(0);
   const [isLiked, setIsLiked] = useState(item.likes.includes(userId));
   const [likes, setLikes] = useState(item.likes);
+  const [commentMode, setCommentMode] = useState(false);
+  const [commentState, setCommentState] = useState(comments);
   const handleLike = () => {
+    if (!isLoggedIn) return alert('please login');
     const _function = async () => {
       //@ts-ignore
       setIsLiked(!isLiked);
@@ -89,100 +100,147 @@ const Feed: React.FC<Props> = ({ play, item, userId }) => {
     outputRange: ['0deg', '360deg'],
   });
 
-  return (
-    <>
-      <LinearGradient
-        colors={['rgba(0,0,0,.3)', 'transparent']}
-        style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          top: 0,
-          height: '70%',
-        }}
-      />
-      <Container>
-        <Video
-          source={{ uri: item.uri }}
-          rate={1.0}
-          volume={1.0}
-          isMuted={false}
-          resizeMode="cover"
-          shouldPlay={play}
-          isLooping
+  const renderFeed = () => {
+    return (
+      <React.Fragment>
+        <LinearGradient
+          colors={['rgba(0,0,0,.3)', 'transparent']}
           style={{
-            width: '100%',
-            height: '100%',
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            height: '70%',
           }}
         />
-      </Container>
-      <Details>
-        <User>{item.email}</User>
-        <MusicBox>
-          <FontAwesome name="music" size={15} color="#f5f5f5" />
-          <Music>{item.title}</Music>
-        </MusicBox>
-      </Details>
-      <Actions>
-        <BoxAction>
-          <AntDesign
-            onPress={handleLike}
-            style={{ alignSelf: 'center' }}
-            name="heart"
-            size={35}
-            color={`${isLiked ? '#F56D91' : '#fff'}`}
-          />
-          <TextAction>{likes.length}</TextAction>
-        </BoxAction>
-        <BoxAction>
-          <FontAwesome
-            style={{ alignSelf: 'center' }}
-            name="commenting"
-            size={35}
-            color="#fff"
-          />
-          <TextAction>{item.comments.length}</TextAction>
-        </BoxAction>
-        <BoxAction>
-          <Animated.View
+        <Container>
+          <Video
+            source={{ uri: item.uri }}
+            rate={1.0}
+            volume={1.0}
+            isMuted={false}
+            resizeMode="cover"
+            shouldPlay={play}
+            isLooping
             style={{
-              borderRadius: 50,
-              borderWidth: 12,
-              borderColor: '#292929',
+              width: '100%',
+              height: '100%',
             }}
-          >
-            <Image
-              style={{
-                width: 35,
-                height: 35,
-                borderRadius: 25,
-              }}
-              source={{
-                uri:
-                  'https://th.bing.com/th/id/R.5423477a17d752e99d68047743d9de11?rik=5BK8zmsuAHk2fw&riu=http%3a%2f%2fcliparts.co%2fcliparts%2f8TE%2f48G%2f8TE48GETa.jpg&ehk=Be0xy8WENPNv62qEV8lk%2brJNaV%2bXKc3l73g5Uzew0%2f8%3d&risl=&pid=ImgRaw&r=0',
-              }}
-            />
-          </Animated.View>
-
-          <Lottie
-            source={musicFly}
-            progress={play ? spinValue : 0}
-            style={{ width: 150, position: 'absolute', bottom: 0, right: 0 }}
           />
-        </BoxAction>
-      </Actions>
-      <LinearGradient
-        colors={['transparent', 'rgba(0,0,0,.4)']}
-        style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          bottom: 0,
-          height: '50%',
+        </Container>
+        <Details>
+          <User>{item.email}</User>
+          <MusicBox>
+            <FontAwesome name="music" size={15} color="#f5f5f5" />
+            <Music>{item.title}</Music>
+          </MusicBox>
+        </Details>
+        <Actions>
+          <BoxAction>
+            <AntDesign
+              onPress={handleLike}
+              style={{ alignSelf: 'center' }}
+              name="heart"
+              size={35}
+              color={`${isLiked ? '#F56D91' : '#fff'}`}
+            />
+            <TextAction>{likes.length}</TextAction>
+          </BoxAction>
+          <BoxAction>
+            <FontAwesome
+              onPress={() => {
+                setCommentMode(true);
+              }}
+              style={{ alignSelf: 'center' }}
+              name="commenting"
+              size={35}
+              color="#fff"
+            />
+            <TextAction>{commentState.length}</TextAction>
+          </BoxAction>
+          <BoxAction>
+            <Animated.View
+              style={{
+                borderRadius: 50,
+                borderWidth: 12,
+                borderColor: '#292929',
+              }}
+            >
+              <Image
+                style={{
+                  width: 35,
+                  height: 35,
+                  borderRadius: 25,
+                }}
+                source={{
+                  uri:
+                    'https://th.bing.com/th/id/R.5423477a17d752e99d68047743d9de11?rik=5BK8zmsuAHk2fw&riu=http%3a%2f%2fcliparts.co%2fcliparts%2f8TE%2f48G%2f8TE48GETa.jpg&ehk=Be0xy8WENPNv62qEV8lk%2brJNaV%2bXKc3l73g5Uzew0%2f8%3d&risl=&pid=ImgRaw&r=0',
+                }}
+              />
+            </Animated.View>
+
+            <Lottie
+              source={musicFly}
+              progress={play ? spinValue : 0}
+              style={{ width: 150, position: 'absolute', bottom: 0, right: 0 }}
+            />
+          </BoxAction>
+        </Actions>
+        <LinearGradient
+          colors={['transparent', 'rgba(0,0,0,.4)']}
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: '50%',
+          }}
+        />
+      </React.Fragment>
+    );
+  };
+  const submitComment = async (content: string) => {
+    if (!isLoggedIn) return alert('please login');
+    const dest = globalConfig.API_URL + '/video/comment';
+    const options = {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        video_id: item.id,
+        content: content,
+      }),
+    };
+    let res = await fetch(dest, options);
+    if (res.ok) {
+      const dest = globalConfig.API_URL + '/video/' + item.id;
+      res = await fetch(dest);
+      if (res.ok) {
+        res = await res.json();
+        //@ts-ignore
+        setCommentState(res.video.comments);
+      }
+    } else {
+      alert('Cannot comment');
+    }
+  };
+
+  const renderComment = () => {
+    return (
+      <Comment
+        //@ts-ignore
+        comments={commentState}
+        //@ts-ignore
+        onSubmit={submitComment}
+        onExit={() => {
+          setCommentMode(false);
         }}
       />
-    </>
-  );
+    );
+  };
+  return <>{commentMode ? renderComment() : renderFeed()}</>;
 };
 
 export default Feed;

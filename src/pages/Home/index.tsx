@@ -10,7 +10,7 @@ import Feed from './Feed';
 import { Container, Header, Text, Tab, Separator } from './styles';
 import { setVideoData } from '../../helper/setVideo';
 
-const Home: React.FC = ({ email, userId }: any) => {
+const Home: React.FC = ({ email, userId, isLoggedIn }: any) => {
   const [server, setServer] = useState(mock_server);
 
   useEffect(() => {
@@ -54,7 +54,14 @@ const Home: React.FC = ({ email, userId }: any) => {
       >
         {server.feed.map((item, index) => (
           <View key={item.id}>
-            <Feed userId={userId} item={item} play={index === active} />
+            <Feed
+              isLoggedIn={isLoggedIn}
+              comments={item.comments}
+              userId={userId}
+              //@ts-ignore
+              item={item}
+              play={index === active}
+            />
           </View>
         ))}
       </ViewPager>
