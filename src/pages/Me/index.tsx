@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Linking, ScrollView } from 'react-native';
+import { Linking, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { UserType } from '../../@types/UserType';
 import { Button } from 'react-native';
 
@@ -21,6 +21,7 @@ import {
 } from './styles';
 import { globalConfig } from '../../../global';
 import { TextInput } from 'react-native-paper';
+import { AntDesign } from '@expo/vector-icons';
 
 type MeProps = {
   email: string;
@@ -30,6 +31,7 @@ type MeProps = {
   setUserId: React.Dispatch<React.SetStateAction<number>>;
 };
 
+//@ts-ignore
 const Me: React.FC<MeProps> = ({
   email,
   setEmail,
@@ -38,14 +40,17 @@ const Me: React.FC<MeProps> = ({
   setUserId,
 }) => {
   const [tempPassword, setTempPassword] = useState('');
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const [avatar, setAvatar] = useState('');
+  const [username, setUsername] = useState('');
+  const [bio, setBio] = useState('');
+
   const [followings, setFollowings] = useState(0);
   const [followers, setFollowers] = useState(0);
 
   const [signupMode, setSignupMode] = useState(true);
+  const [isEdit, setIsEdit] = useState(false);
 
   const setUserData = (user: UserType) => {
     setEmail(user.email);
@@ -101,26 +106,58 @@ const Me: React.FC<MeProps> = ({
     };
     function_();
   };
+  const handleEditSubmit = async () => {};
+  const renderEditProfile = () => {
+    const styles = StyleSheet.create({
+      EditorInput: {
+        backgroundColor: 'white',
+      },
+      MainContainer: {
+        flex: 1,
+        paddingTop: Platform.OS === 'ios' ? 20 : 0,
+        justifyContent: 'center',
+        margin: 20,
+      },
+
+      TextInputStyleClass: {
+        backgroundColor: 'white',
+      },
+    });
+    return (
+      <View style={styles.MainContainer}>
+        <TextInput
+          onChangeText={setUsername}
+          style={styles.EditorInput}
+          defaultValue={username}
+          placeholder="Change your username"
+        />
+
+        <TextInput
+          onChangeText={setAvatar}
+          placeholder="Avatar URL or Choose below"
+          style={{ backgroundColor: 'white' }}
+        ></TextInput>
+        <AntDesign onPress={() => {}} name="upload" size={24} color="black" />
+
+        <TextInput
+          onChangeText={setBio}
+          style={styles.TextInputStyleClass}
+          multiline={true}
+          placeholder="Bio."
+          underlineColorAndroid="transparent"
+        />
+        <Button onPress={() => {}} title={`Submit`} color={'black'} />
+        <Content>
+          <StatsText onPress={() => setIsEdit(false)}>Close </StatsText>
+        </Content>
+      </View>
+    );
+  };
   const renderProfile = () => {
     return (
       <Container>
         <Header>
-          {/* check if user and allow follow */}
-          {/* <AntDesign
-          style={{ position: 'absolute', left: 10, top: 10 }}
-          name="adduser"
-          size={24}
-          color="black"
-        /> */}
-          {/* username goes here */}
           <Title>{username}</Title>
-          {/* <MaterialIcons name="arrow-drop-down" size={24} color="black" /> */}
-          {/* <FontAwesome
-          style={{ position: 'absolute', right: 13, top: 12 }}
-          name="ellipsis-v"
-          size={24}
-          color="black"
-        /> */}
         </Header>
         <ScrollView>
           <Content>
@@ -146,7 +183,9 @@ const Me: React.FC<MeProps> = ({
               </ProfileEdit>
             </ProfileColumn>
 
-            <StatsText>Tap to edit profile</StatsText>
+            <StatsText onPress={() => setIsEdit(true)}>
+              Tap to edit profile
+            </StatsText>
           </Content>
         </ScrollView>
       </Container>
@@ -185,7 +224,11 @@ const Me: React.FC<MeProps> = ({
       </Container>
     );
   };
-  return isLoggedIn ? renderProfile() : renderLogin();
+  return isLoggedIn
+    ? isEdit
+      ? renderEditProfile()
+      : renderProfile()
+    : renderLogin();
 };
 
 export default Me;

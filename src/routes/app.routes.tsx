@@ -115,7 +115,7 @@ const AppRoutes: React.FC = () => {
             //@ts-ignore
             email={email}
             setEmail={setEmail}
-            isLoggedIn={isLoggedIn}
+            isLoggedIn={true}
             setIsLoggedIn={setIsLoggedIn}
             setUserId={setUserId}
           />
