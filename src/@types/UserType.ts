@@ -4,7 +4,7 @@ export type UserType = {
   avatar: string;
   followingState: any;
   name: string;
-  age?: string;
-  address?: string;
+  address: '';
+  phone_number: '';
   video_id: Array<number>;
 };

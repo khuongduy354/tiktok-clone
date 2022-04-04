@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Linking, ScrollView, StyleSheet, Text, View } from 'react-native';
+
+import * as ImagePicker from 'expo-image-picker';
+import {
+  Image,
+  Linking,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { UserType } from '../../@types/UserType';
 import { Button } from 'react-native';
 
@@ -42,9 +51,11 @@ const Me: React.FC<MeProps> = ({
   const [tempPassword, setTempPassword] = useState('');
   const [password, setPassword] = useState('');
 
-  const [avatar, setAvatar] = useState('');
+  const [avatarString, setAvatarString] = useState('');
+  const [avatarImg, setAvatarImg] = useState(null);
   const [username, setUsername] = useState('');
   const [bio, setBio] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   const [followings, setFollowings] = useState(0);
   const [followers, setFollowers] = useState(0);
@@ -52,13 +63,24 @@ const Me: React.FC<MeProps> = ({
   const [signupMode, setSignupMode] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
 
-  const setUserData = (user: UserType) => {
-    setEmail(user.email);
-    setAvatar(user.avatar);
-    setFollowers(user.followingState.followers.length);
-    setFollowings(user.followingState.followings.length);
-    setUsername(user.name);
-    setUserId(user.id);
+  const setUserData = (user: UserType, isUpdate = false) => {
+    if (!isUpdate) {
+      setEmail(user.email);
+      //@ts-ignore
+      setAvatarString(user.avatar); //@ts-ignore
+      setFollowers(user.followingState.followers.length);
+      setFollowings(user.followingState.followings.length);
+      setUsername(user.name);
+      setUserId(user.id);
+      setBio(user.address);
+      setPhoneNumber(user.phone_number);
+    } else {
+      //@ts-ignore
+      setAvatarString(user.avatar);
+      setUsername(user.name);
+      setBio(user.address);
+      setPhoneNumber(user.phone_number);
+    }
   };
   const getVideo = () => {};
   const login = () => {
@@ -70,7 +92,6 @@ const Me: React.FC<MeProps> = ({
         const user = data.user;
         setUserData(user);
         setIsLoggedIn(true);
-        console.log('ok');
       }
     };
     _function();
@@ -106,7 +127,61 @@ const Me: React.FC<MeProps> = ({
     };
     function_();
   };
-  const handleEditSubmit = async () => {};
+  const handleEditSubmit = async () => {
+    const dest = globalConfig.API_URL + '/user';
+    let formData = new FormData();
+
+    formData.append('email', JSON.stringify(email));
+    formData.append('name', JSON.stringify(username));
+    formData.append('phone_number', JSON.stringify(phoneNumber));
+    formData.append('address', JSON.stringify(bio));
+
+    //@ts-ignore
+    if (avatarImg) {
+      const obj = {
+        //@ts-ignore
+        uri: avatarImg.uri,
+        //@ts-ignore
+        type: 'image/png',
+        name: 'asdas',
+      };
+      //@ts-ignore
+      formData.append('avatar', obj);
+    } else {
+      formData.append('avatar', JSON.stringify(avatarString));
+    }
+
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      body: formData,
+    };
+    let result = await fetch(dest, options);
+    if (result.ok) {
+      result = await result.json();
+      //@ts-ignore
+      const user = result.user;
+      console.log('new');
+      console.log(result);
+      console.log(user);
+      setUserData(user);
+      setIsEdit(false);
+    }
+  };
+  const selectAvatar = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      //@ts-ignore
+      setAvatarImg(result as any);
+    } catch (e) {}
+  };
+
   const renderEditProfile = () => {
     const styles = StyleSheet.create({
       EditorInput: {
@@ -114,7 +189,7 @@ const Me: React.FC<MeProps> = ({
       },
       MainContainer: {
         flex: 1,
-        paddingTop: Platform.OS === 'ios' ? 20 : 0,
+        // paddingTop: Platform.OS === 'ios' ? 20 : 0,
         justifyContent: 'center',
         margin: 20,
       },
@@ -133,12 +208,29 @@ const Me: React.FC<MeProps> = ({
         />
 
         <TextInput
-          onChangeText={setAvatar}
-          placeholder="Avatar URL or Choose below"
+          //@ts-ignore
+          disabled={avatarImg}
+          //@ts-ignore
+          onChangeText={setAvatarString}
+          placeholder={
+            avatarImg !== null ? 'Avatar chosen' : 'Avatar URL or Choose below'
+          }
           style={{ backgroundColor: 'white' }}
         ></TextInput>
-        <AntDesign onPress={() => {}} name="upload" size={24} color="black" />
-
+        {avatarImg && <Text>Click to change avatar</Text>}
+        <AntDesign
+          onPress={() => {
+            avatarImg ? setAvatarImg(null) : selectAvatar();
+          }}
+          name="upload"
+          size={24}
+          color="black"
+        />
+        <TextInput
+          onChangeText={setPhoneNumber}
+          placeholder="Your phone number"
+          style={{ backgroundColor: 'white' }}
+        ></TextInput>
         <TextInput
           onChangeText={setBio}
           style={styles.TextInputStyleClass}
@@ -146,7 +238,11 @@ const Me: React.FC<MeProps> = ({
           placeholder="Bio."
           underlineColorAndroid="transparent"
         />
-        <Button onPress={() => {}} title={`Submit`} color={'black'} />
+        <Button
+          onPress={() => handleEditSubmit()}
+          title={`Submit`}
+          color={'black'}
+        />
         <Content>
           <StatsText onPress={() => setIsEdit(false)}>Close </StatsText>
         </Content>
@@ -161,8 +257,20 @@ const Me: React.FC<MeProps> = ({
         </Header>
         <ScrollView>
           <Content>
-            <Avatar source={avatar} />
-            {/* email goes here */}
+            <Image
+              style={
+                StyleSheet.create({
+                  image: {
+                    height: 120,
+                    width: 120,
+                    borderRadius: 50,
+                  },
+                }).image
+              }
+              source={{
+                uri: avatarString,
+              }}
+            />
             <Username>{email}</Username>
             <Stats>
               <StatsColumn>
