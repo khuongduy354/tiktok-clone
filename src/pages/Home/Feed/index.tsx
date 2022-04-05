@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Animated, Easing } from 'react-native';
 import Comment from '../Comment/list';
 
@@ -55,8 +55,14 @@ const Feed: React.FC<Props> = ({
   const spinValue = new Animated.Value(0);
   const [isLiked, setIsLiked] = useState(item.likes.includes(userId));
   const [likes, setLikes] = useState(item.likes);
+  const [isVid, setIsVid] = useState(true);
   const [commentMode, setCommentMode] = useState(false);
   const [commentState, setCommentState] = useState(comments);
+
+  useEffect(() => {
+    setIsVid(item.uri.slice(-4) === '.mp4');
+  }, [item.uri]);
+
   const handleLike = () => {
     if (!isLoggedIn) return alert('please login');
     const _function = async () => {
@@ -99,7 +105,6 @@ const Feed: React.FC<Props> = ({
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg'],
   });
-
   const renderFeed = () => {
     return (
       <React.Fragment>
@@ -114,19 +119,29 @@ const Feed: React.FC<Props> = ({
           }}
         />
         <Container>
-          <Video
-            source={{ uri: item.uri }}
-            rate={1.0}
-            volume={1.0}
-            isMuted={false}
-            resizeMode="cover"
-            shouldPlay={play}
-            isLooping
-            style={{
-              width: '100%',
-              height: '100%',
-            }}
-          />
+          {isVid ? (
+            <Video
+              source={{ uri: item.uri }}
+              rate={1.0}
+              volume={1.0}
+              isMuted={false}
+              resizeMode="cover"
+              shouldPlay={play}
+              isLooping
+              style={{
+                width: '100%',
+                height: '100%',
+              }}
+            />
+          ) : (
+            <Image
+              style={{
+                width: '100%',
+                height: '100%',
+              }}
+              source={{ uri: item.uri }}
+            />
+          )}
         </Container>
         <Details>
           <User>{item.email}</User>
@@ -182,7 +197,12 @@ const Feed: React.FC<Props> = ({
             <Lottie
               source={musicFly}
               progress={play ? spinValue : 0}
-              style={{ width: 150, position: 'absolute', bottom: 0, right: 0 }}
+              style={{
+                width: 150,
+                position: 'absolute',
+                bottom: 0,
+                right: 0,
+              }}
             />
           </BoxAction>
         </Actions>

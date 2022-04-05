@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Text, Button } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { globalConfig } from '../../../global';
 import * as ImagePicker from 'expo-image-picker';
@@ -23,17 +23,19 @@ const UploadVid = ({ email, _public = true, isLoggedIn }: addVideoProp) => {
 
   //@ts-ignore
   const [video, setVideo] = useState(null);
+  const [image, setImage] = useState(null);
+  const [isSelected, setIsSelected] = useState(false);
 
   const uploadVideo = () => {
     let formData = new FormData();
     //@ts-ignore
-    if (video) {
+    if (isSelected) {
       const obj = {
-        name: 'myname.mp4',
+        name: 'myname',
         //@ts-ignore
-        uri: video.uri,
+        uri: video ? video.uri : image.uri,
         //@ts-ignore
-        type: 'video/mp4',
+        type: video ? 'video/mp4' : 'image/png',
       };
 
       //@ts-ignore
@@ -53,33 +55,64 @@ const UploadVid = ({ email, _public = true, isLoggedIn }: addVideoProp) => {
   const selectVideo = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
       });
       setVideo(result as any);
+      setIsSelected(true);
       //@ts-ignore
-      uploadVideo(result);
+      // uploadVideo(result);
     } catch (e) {
       console.log(e);
     }
   };
-  return (
-    isLoggedIn &&
-    email && (
-      <Container style={{ marginTop: 50 }}>
-        <TouchableOpacity onPress={() => selectVideo()}>
-          <MaterialIcons name="attach-file" size={50} color={'black'} />
-        </TouchableOpacity>
-        <TextInput
-          style={{ marginTop: 20 }}
-          onChangeText={setTitle}
-          value={title}
-          placeholder="Caption here"
-        />
-      </Container>
-    )
+  const selectImage = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      setImage(result as any);
+      setIsSelected(true);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  return isLoggedIn && email ? (
+    <Container style={{ marginTop: 50 }}>
+      <TouchableOpacity disabled={isSelected} onPress={() => selectVideo()}>
+        <MaterialIcons name="attach-file" size={50} color={'black'} />
+      </TouchableOpacity>
+      <TouchableOpacity disabled={isSelected} onPress={() => selectImage()}>
+        <MaterialIcons name="attach-file" size={50} color={'black'} />
+      </TouchableOpacity>
+      {isSelected && (
+        <Button
+          title="Repick"
+          onPress={() => {
+            setIsSelected(false);
+          }}
+        >
+          Choose again
+        </Button>
+      )}
+      <TextInput
+        style={{ marginTop: 20 }}
+        onChangeText={setTitle}
+        value={title}
+        placeholder="Caption here"
+      />
+      <Button title="Submit" onPress={uploadVideo}>
+        Submit
+      </Button>
+    </Container>
+  ) : (
+    <Text style={{ color: 'black', marginTop: 100 }}>Please login</Text>
   );
 };
 
