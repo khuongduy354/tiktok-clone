@@ -16,6 +16,7 @@ import Inbox from '../pages/Inbox';
 import Me from '../pages/Me';
 import Record from '../pages/Record';
 import UploadVid from '../pages/Record/UploadVid';
+import UserProfile from '../pages/Me/UserProfile';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -144,6 +145,9 @@ const RootStackScreen: React.FC = () => {
         name="Record"
         component={Record}
       />
+      <Stack.Screen options={{ headerShown: false }} name="UserProfile">
+        {props => <UserProfile {...props} />}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 };

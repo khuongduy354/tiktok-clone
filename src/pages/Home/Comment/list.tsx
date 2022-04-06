@@ -8,25 +8,21 @@ export default class List extends Component {
   };
 
   render() {
-    // Pull comments out of state
     //@ts-ignore
     const { comments } = this.props;
     return (
       <View style={styles.container}>
-        {/* Scrollable list */}
         <ScrollView
           ref={scrollView => {
             //@ts-ignore
             this._scrollView = scrollView;
           }}
         >
-          {/* Render each comment with Comment component */}
           {comments.map((comment: any, index: number) => (
             //@ts-ignore
             <Comment comment={comment} key={index} />
           ))}
         </ScrollView>
-        {/* Comment input box */}
         {/* @ts-ignore */}
         <Input onExit={this.props.onExit} onSubmit={this.props.onSubmit} />
       </View>

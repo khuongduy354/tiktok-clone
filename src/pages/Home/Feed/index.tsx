@@ -32,12 +32,6 @@ interface Item {
   public: boolean;
 }
 
-type CommentProp = {
-  content: string;
-  user_id: number;
-  created_at: string;
-};
-
 interface Props {
   play: boolean;
   item: Item;

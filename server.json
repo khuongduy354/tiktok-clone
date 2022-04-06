@@ -6,7 +6,12 @@
       "title": "Introducing Chromecast. The easiest way to enjoy",
       "likes": [1, 2, 3, 4, 5],
       "comments": [
-        { "user_id": 1, "content": "sadfas", "created_at": "asdas" }
+        {
+          "user_id": 1,
+          "content": "sadfas",
+          "created_at": "asdas",
+          "avatar": "asdas"
+        }
       ],
       "uri": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
       "public": true
@@ -17,7 +22,12 @@
       "title": "HBO GO now works with Chromecast",
       "likes": [1, 2, 3, 4],
       "comments": [
-        { "user_id": 1, "content": "sadfas", "created_at": "asdas" }
+        {
+          "user_id": 1,
+          "content": "sadfas",
+          "created_at": "asdas",
+          "avatar": "asdas"
+        }
       ],
       "uri": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
       "public": true
