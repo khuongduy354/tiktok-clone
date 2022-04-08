@@ -68,8 +68,8 @@ const Me: React.FC<MeProps> = ({
       setEmail(user.email);
       //@ts-ignore
       setAvatarString(user.avatar); //@ts-ignore
-      setFollowers(user.followingState.followers.length);
-      setFollowings(user.followingState.followings.length);
+      // setFollowers(user.followingState.followers.length);
+      // setFollowings(urser.followingState.followings.length);
       setUsername(user.name);
       setUserId(user.id);
       setBio(user.address);
@@ -85,13 +85,22 @@ const Me: React.FC<MeProps> = ({
   const getVideo = () => {};
   const login = () => {
     const _function = async () => {
-      const dest = globalConfig.API_URL + '/user/' + `${email}`;
-      const res = await fetch(dest);
+      const dest = globalConfig.API_URL + '/user/login';
+      const options = {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, password: password }),
+      };
+      const res = await fetch(dest, options);
       if (res.ok) {
         const data = await res.json();
         const user = data.user;
         setUserData(user);
         setIsLoggedIn(true);
+      } else {
+        alert('Cant login');
       }
     };
     _function();
@@ -111,17 +120,16 @@ const Me: React.FC<MeProps> = ({
         alert('Different passwords');
       } else {
         let response = await fetch(dest, options);
-        response = await response.json();
         if (response.ok) {
           let result = await fetch(globalConfig.API_URL + '/user/' + email);
-          result = await result.json();
           if (result.ok) {
             const data = await result.json();
             const user = data.user;
             setIsLoggedIn(true);
             setUserData(user);
-            console.log('ok');
           }
+        } else {
+          alert('Cannot Signup');
         }
       }
     };
@@ -163,9 +171,6 @@ const Me: React.FC<MeProps> = ({
       result = await result.json();
       //@ts-ignore
       const user = result.user;
-      console.log('new');
-      console.log(result);
-      console.log(user);
       setUserData(user);
       setIsEdit(false);
     }
