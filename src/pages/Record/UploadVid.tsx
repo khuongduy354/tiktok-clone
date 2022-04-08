@@ -26,7 +26,7 @@ const UploadVid = ({ email, _public = true, isLoggedIn }: addVideoProp) => {
   const [image, setImage] = useState(null);
   const [isSelected, setIsSelected] = useState(false);
 
-  const uploadVideo = () => {
+  const uploadVideo = async () => {
     let formData = new FormData();
     //@ts-ignore
     if (isSelected) {
@@ -40,16 +40,23 @@ const UploadVid = ({ email, _public = true, isLoggedIn }: addVideoProp) => {
 
       //@ts-ignore
       formData.append('videoFile', obj);
-      formData.append('title', JSON.stringify(email));
-      formData.append('email', JSON.stringify(title));
+      formData.append('title', JSON.stringify(title));
+      formData.append('email', JSON.stringify(email));
 
-      fetch(globalConfig.API_URL + '/video', {
+      let result = await fetch(globalConfig.API_URL + '/video', {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data',
         },
         body: formData,
       });
+      if (result.ok) {
+        result = await result.json();
+        alert(result.message);
+      } else {
+        result = await result.json();
+        alert(result.message);
+      }
     }
   };
   const selectVideo = async () => {
@@ -87,9 +94,11 @@ const UploadVid = ({ email, _public = true, isLoggedIn }: addVideoProp) => {
     <Container style={{ marginTop: 50 }}>
       <TouchableOpacity disabled={isSelected} onPress={() => selectVideo()}>
         <MaterialIcons name="attach-file" size={50} color={'black'} />
+        <Text>Select Video</Text>
       </TouchableOpacity>
       <TouchableOpacity disabled={isSelected} onPress={() => selectImage()}>
         <MaterialIcons name="attach-file" size={50} color={'black'} />
+        <Text>Select Image</Text>
       </TouchableOpacity>
       {isSelected && (
         <Button
