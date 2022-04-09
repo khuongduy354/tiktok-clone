@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TouchableOpacity, Text, Button } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { globalConfig } from '../../../global';
@@ -6,10 +6,19 @@ import * as ImagePicker from 'expo-image-picker';
 import { Container } from './styles';
 import { addVideoProp } from '../../@types/VideoType';
 import { TextInput } from 'react-native-paper';
+import UserContext from '../../ContextManager/ContextProvider';
 
 //@ts-ignore
-const UploadVid = ({ email, _public = true, isLoggedIn }: addVideoProp) => {
+const UploadVid = () => {
   const [title, setTitle] = useState('');
+  const {
+    email,
+    userId,
+    setUserId,
+    isLoggedIn,
+    setIsLoggedIn,
+    setEmail,
+  } = useContext(UserContext);
   useEffect(() => {
     (async () => {
       const {
