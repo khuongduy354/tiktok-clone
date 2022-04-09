@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import * as ImagePicker from 'expo-image-picker';
 import {
@@ -31,9 +31,23 @@ import {
 import { globalConfig } from '../../../global';
 import { TextInput } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
-import UserContext from '../../ContextManager/ContextProvider';
 
-const Me: React.FC = () => {
+type MeProps = {
+  email: string;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  isLoggedIn: boolean;
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  setUserId: React.Dispatch<React.SetStateAction<number>>;
+};
+
+//@ts-ignore
+const Me: React.FC<MeProps> = ({
+  email,
+  setEmail,
+  isLoggedIn,
+  setIsLoggedIn,
+  setUserId,
+}) => {
   const [tempPassword, setTempPassword] = useState('');
   const [password, setPassword] = useState('');
 
@@ -48,15 +62,6 @@ const Me: React.FC = () => {
 
   const [signupMode, setSignupMode] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
-
-  const {
-    email,
-    userId,
-    setUserId,
-    isLoggedIn,
-    setIsLoggedIn,
-    setEmail,
-  } = useContext(UserContext);
 
   const setUserData = (user: UserType, isUpdate = false) => {
     if (!isUpdate) {

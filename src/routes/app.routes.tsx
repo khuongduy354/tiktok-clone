@@ -1,5 +1,4 @@
-import React, { useContext, useState } from 'react';
-import UserContext from '../ContextManager/ContextProvider';
+import React, { useState } from 'react';
 import { StatusBar, Platform } from 'react-native';
 
 import {
@@ -24,14 +23,9 @@ const Stack = createStackNavigator();
 
 const AppRoutes: React.FC = () => {
   const [home, setHome] = useState(true);
-  const {
-    email,
-    userId,
-    setUserId,
-    isLoggedIn,
-    setIsLoggedIn,
-    setEmail,
-  } = useContext(UserContext);
+  const [email, setEmail] = useState('');
+  const [userId, setUserId] = useState(-1);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   StatusBar.setBarStyle('dark-content');
 
@@ -58,7 +52,14 @@ const AppRoutes: React.FC = () => {
     >
       <Tab.Screen
         name="Home"
-        children={() => <Home />}
+        children={() => (
+          <Home
+            //@ts-ignore
+            email={email}
+            userId={userId}
+            isLoggedIn={isLoggedIn}
+          />
+        )}
         listeners={{
           focus: () => setHome(true),
           blur: () => setHome(false),
@@ -82,7 +83,13 @@ const AppRoutes: React.FC = () => {
       />
       <Tab.Screen
         name="Upload"
-        children={() => <UploadVid />}
+        children={() => (
+          <UploadVid
+            //@ts-ignore
+            email={email}
+            isLoggedIn={isLoggedIn}
+          />
+        )}
         options={{
           tabBarLabel: '',
           tabBarIcon: () => <HomeButtom home={home} />,
@@ -104,7 +111,16 @@ const AppRoutes: React.FC = () => {
       />
       <Tab.Screen
         name="Me"
-        children={() => <Me />}
+        children={() => (
+          <Me
+            //@ts-ignore
+            email={email}
+            setEmail={setEmail}
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+            setUserId={setUserId}
+          />
+        )}
         options={{
           tabBarLabel: 'Me',
           tabBarIcon: ({ color }) => (

@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
-import UserContext from '../../ContextManager/ContextProvider';
+import React, { useEffect, useState } from 'react';
 import { globalConfig } from '../../../global';
 import { View } from 'react-native';
 
@@ -11,16 +10,9 @@ import Feed from './Feed';
 import { Container, Header, Text, Tab, Separator } from './styles';
 import { setVideoData } from '../../helper/setVideo';
 
-const Home: React.FC = () => {
+const Home: React.FC = ({ email, userId, isLoggedIn }: any) => {
   const [server, setServer] = useState(mock_server);
-  const {
-    email,
-    userId,
-    setUserId,
-    isLoggedIn,
-    setIsLoggedIn,
-    setEmail,
-  } = useContext(UserContext);
+
   useEffect(() => {
     const func_ = async () => {
       const result = await fetch(globalConfig.API_URL + '/video/feed/all');
