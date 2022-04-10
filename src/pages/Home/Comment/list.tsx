@@ -32,7 +32,7 @@ export default class List extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    zIndex: 10,
+    zIndex: 1000,
     flex: 1,
     backgroundColor: '#FFF',
     paddingTop: 20,

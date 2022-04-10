@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Routes from './src/routes';
 import { UserProvider } from './src/ContextManager/ContextProvider';
+
 const App: React.FC = () => {
   const [email, setEmail] = useState('');
   const [userId, setUserId] = useState(-1);

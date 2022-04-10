@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 
 import { Container, Search, Header, Input } from './styles';
+import { Video } from 'expo-av';
 
 const Discover: React.FC = () => {
   const [search, setSearch] = useState('');

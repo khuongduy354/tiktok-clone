@@ -1,5 +1,5 @@
 Arguments: 
-  E:\Apps\Nodejs\node.exe C:\Users\khuongduy354\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @types/react-native-comments
+  E:\Apps\Nodejs\node.exe C:\Users\khuongduy354\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @types/react-native-super-grid
 
 PATH: 
   C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;E:\Apps\Nodejs\;E:\Apps\Git\cmd;C:\Users\khuongduy354\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\khuongduy354\AppData\Local\Programs\Python\Python39\;C:\Users\khuongduy354\AppData\Local\Microsoft\WindowsApps;E:\Apps\Microsoft VS Code\bin;C:\Users\khuongduy354\AppData\Roaming\npm;C:\WebDriver\bin;";C:\ProgramData\DockerDesktop\version-bin";C:\msys64\mingw64\bin;E:\Apps\Redis\;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;E:\Apps\Github CLI2\;C:\Users\khuongduy354\.cargo\bin;C:\Users\khuongduy354\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\khuongduy354\AppData\Local\Programs\Python\Python39\;C:\Users\khuongduy354\AppData\Local\Microsoft\WindowsApps;C:\Users\khuongduy354\AppData\Roaming\npm;E:\Apps\heroku\bin;D:\Apps\Microsoft VS Code\bin;E:\Apps\Github CLI\;E:\Apps\Microsoft VS Code\bin;C:\Users\khuongduy354\AppData\Local\GitHubDesktop\bin;E:\Apps\IntelliJ IDEA Community Edition 2021.3.2\bin;;E:\Apps\Postgres\bin;C:\Program Files\Azure Data Studio\bin;
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2freact-native-comments: Not found
+  Error: https://registry.yarnpkg.com/@types%2freact-native-super-grid: Not found
       at Request.params.callback [as _callback] (C:\Users\khuongduy354\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:67029:18)
       at Request.self.callback (C:\Users\khuongduy354\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140883:22)
       at Request.emit (events.js:375:28)
@@ -42,6 +42,8 @@ npm manifest:
       "@react-navigation/material-bottom-tabs": "^5.1.1",
       "@react-navigation/native": "^5.0.9",
       "@react-navigation/stack": "5.2.19",
+      "@types/react-native-swipe-gestures": "^1.0.4",
+      "@types/react-native-video": "^5.0.13",
       "dotenv": "^16.0.0",
       "expo": "^44.0.6",
       "expo-av": "~10.2.0",
@@ -54,7 +56,7 @@ npm manifest:
       "react-dom": "17.0.1",
       "react-native": "0.64.3",
       "react-native-auth0": "^2.13.0",
-      "react-native-comments": "^1.1.9",
+      "react-native-awesome-comments": "^1.1.0",
       "react-native-document-picker": "^8.0.0",
       "react-native-fs": "^2.19.0",
       "react-native-gesture-handler": "~2.1.0",
@@ -64,6 +66,7 @@ npm manifest:
       "react-native-safe-area-context": "3.3.2",
       "react-native-screens": "~3.10.1",
       "react-native-status-bar-height": "^2.5.0",
+      "react-native-video": "^5.2.0",
       "react-native-web": "0.17.1",
       "styled-components": "^5.0.1"
     },
@@ -1706,6 +1709,28 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.4.tgz#fcf7205c25dff795ee79af1e30da2c9790808f11"
     integrity sha512-rZ5drC/jWjrArrS8BR6SIr4cWpW09RNTYt9AMZo3Jwwif+iacXAqgVjm0B0Bv/S1jhDXKHqRVNCbACkJ89RAnQ==
   
+  "@types/react-native-swipe-gestures@^1.0.4":
+    version "1.0.4"
+    resolved "https://registry.yarnpkg.com/@types/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.4.tgz#bf436ca375c6b307e63ef45c7a1ef9c96028b709"
+    integrity sha512-ZTrg82+WwwNcDvF76OZORZFej2//sp7CovVPTXPHRZN96K64WIViW1Ix3gvvEwAAcmybi7SbxGQsbBexJ3rz+Q==
+    dependencies:
+      react-native-swipe-gestures "*"
+  
+  "@types/react-native-video@^5.0.13":
+    version "5.0.13"
+    resolved "https://registry.yarnpkg.com/@types/react-native-video/-/react-native-video-5.0.13.tgz#4a6df3156c5d9ad4e3a37edb320199eaeb22ea20"
+    integrity sha512-pXdF+uM5Kqmsx90eQzOArkz06QOzKQi8uekdcqD+KeNXuQfwJ6hiuGTiC46VcgxGdQVCKAa1AYMg6oUMPaygew==
+    dependencies:
+      "@types/react" "*"
+      "@types/react-native" "*"
+  
+  "@types/react-native@*":
+    version "0.67.3"
+    resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.67.3.tgz#baba111c8ce1a45a6034c15f6f0ad98826239780"
+    integrity sha512-hF4uOZFl2PPQtGWOtLoafrlCJeU815X3PgfVePM+7EhOIZhYXKH7+p3R3cZSnwVnrU5Ep/JfiHimMDliY3o8oQ==
+    dependencies:
+      "@types/react" "*"
+  
   "@types/react-native@~0.64.12":
     version "0.64.24"
     resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.64.24.tgz#54d8aaadc12d429004b0a573dc3a65ad27430cc6"
@@ -2849,6 +2874,11 @@ Lockfile:
     version "1.4.85"
     resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.85.tgz#a3666ba42147026b9f34d4d8d4caf0740e80f751"
     integrity sha512-K9AsQ41WS2bjZUFpRWfvaS4RjEcRCamEkBJN1Z1TQILBfP1H8QnJ9ti0wiLiMv0sRjX3EHKzgs9jDnmGFx2jXg==
+  
+  eme-encryption-scheme-polyfill@^2.0.1:
+    version "2.0.4"
+    resolved "https://registry.yarnpkg.com/eme-encryption-scheme-polyfill/-/eme-encryption-scheme-polyfill-2.0.4.tgz#7d818302af3f3b19d5974255dcc92dc087413845"
+    integrity sha512-MHYJX1v145Pjj2YJTrVVuJOYyXrxGVy8LWf6kV5M4jrV/GyoeuJKyTuD+GaD+VAiE8Ip+MptiH4dXk6ZVmMNow==
   
   emoji-regex@^7.0.1:
     version "7.0.3"
@@ -4488,6 +4518,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-2.2.0.tgz#7d86bd56679f58ce6a84704a657dd392bba81a79"
     integrity sha1-fYa9VmefWM5qhHBKZX3TkruoGnk=
   
+  keymirror@^0.1.1:
+    version "0.1.1"
+    resolved "https://registry.yarnpkg.com/keymirror/-/keymirror-0.1.1.tgz#918889ea13f8d0a42e7c557250eee713adc95c35"
+    integrity sha1-kYiJ6hP40KQufFVyUO7nE63JXDU=
+  
   kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
     version "3.2.2"
     resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
@@ -5080,6 +5115,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/mockdate/-/mockdate-3.0.5.tgz#789be686deb3149e7df2b663d2bc4392bc3284fb"
     integrity sha512-iniQP4rj1FhBdBYS/+eQv7j1tadJ9lJtdzgOpvsOHng/GbcDh2Fhdeq+ZRldrPYdXvCyfFUmFeEwEGXZB5I/AQ==
   
+  moment@^2.24.0:
+    version "2.29.1"
+    resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+    integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+  
   ms@2.0.0:
     version "2.0.0"
     resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -5614,7 +5654,7 @@ Lockfile:
       kleur "^3.0.3"
       sisteransi "^1.0.5"
   
-  prop-types@^15.5.10, prop-types@^15.6.0, prop-types@^15.7.2, prop-types@^15.8.1:
+  prop-types@^15.5.10, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
     version "15.8.1"
     resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
     integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -5703,6 +5743,13 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
     integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
   
+  react-native-animatable@^1.2.4:
+    version "1.3.3"
+    resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.3.tgz#a13a4af8258e3bb14d0a9d839917e9bb9274ec8a"
+    integrity sha512-2ckIxZQAsvWn25Ho+DK3d1mXIgj7tITkrS4pYDvx96WyOttSvzzFeQnM2od0+FUMzILbdHDsDEqZvnz1DYNQ1w==
+    dependencies:
+      prop-types "^15.7.2"
+  
   react-native-auth0@^2.13.0:
     version "2.13.0"
     resolved "https://registry.yarnpkg.com/react-native-auth0/-/react-native-auth0-2.13.0.tgz#778d72f03e5f4c664555dc9ecec2096af3e7cf46"
@@ -5714,6 +5761,15 @@ Lockfile:
       jwt-decode "^2.2.0"
       url "^0.11.0"
   
+  react-native-awesome-comments@^1.1.0:
+    version "1.1.0"
+    resolved "https://registry.yarnpkg.com/react-native-awesome-comments/-/react-native-awesome-comments-1.1.0.tgz#55b7b413aed945e90f4d3977c8a8e59c2829e61c"
+    integrity sha512-NI257XHXO2t0rxI+9zXP1F2oDgUkDLkIFq43KReww0uky87DtnY3EBc+w0P4XQe25i4HCY7JLmzpVTsHwixhwg==
+    dependencies:
+      lodash "^4.17.11"
+      moment "^2.24.0"
+      react-native-modal "9.0.0"
+  
   react-native-codegen@^0.0.6:
     version "0.0.6"
     resolved "https://registry.yarnpkg.com/react-native-codegen/-/react-native-codegen-0.0.6.tgz#b3173faa879cf71bfade8d030f9c4698388f6909"
@@ -5722,20 +5778,6 @@ Lockfile:
       flow-parser "^0.121.0"
       jscodeshift "^0.11.0"
       nullthrows "^1.1.1"
-  
-  react-native-collapsible@^1.5.3:
-    version "1.6.0"
-    resolved "https://registry.yarnpkg.com/react-native-collapsible/-/react-native-collapsible-1.6.0.tgz#ca261ffff16914f872059bb0972e3a78c4b37f9c"
-    integrity sha512-beZjdgbT9Y/Pg591Xy5XkKG20HffJiVad4n9bfcUF/f783A+tvOVXnqvbS58Lkaym93mi4jcDPMuW9Vc1t6rqg==
-  
-  react-native-comments@^1.1.9:
-    version "1.1.9"
-    resolved "https://registry.yarnpkg.com/react-native-comments/-/react-native-comments-1.1.9.tgz#ec6a8d4631d60eb341a8cab405999cc869f78ee1"
-    integrity sha512-Alsgv9C7thE25Aq0MZGM4z8XwHRWX8FlHQGGsDqQowg9sJCRErH159GKnvDfW0rBc+L8kIrdSmOf6xdNb3AsAQ==
-    dependencies:
-      prop-types "^15.5.10"
-      react-native-collapsible "^1.5.3"
-      react-native-timeago "^0.4.0"
   
   react-native-document-picker@^8.0.0:
     version "8.0.0"
@@ -5772,6 +5814,14 @@ Lockfile:
     version "1.3.1"
     resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
     integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
+  
+  react-native-modal@9.0.0:
+    version "9.0.0"
+    resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-9.0.0.tgz#0bfd0770361a2e5c6e0072bfdb0f1277f9662dba"
+    integrity sha512-j4xeIK9noHU/ksp2Ndc8NI1qJvjApToqGvqLEu2wtYeaISanbhtd0S3V4hZkSlCa3DZtegl6aaMZBLeH1q6xfA==
+    dependencies:
+      prop-types "^15.6.2"
+      react-native-animatable "^1.2.4"
   
   react-native-paper@^3.9.0:
     version "3.12.0"
@@ -5835,10 +5885,19 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-native-status-bar-height/-/react-native-status-bar-height-2.6.0.tgz#b6afd25b6e3d533c43d0fcdcfd5cafd775592cea"
     integrity sha512-z3SGLF0mHT+OlJDq7B7h/jXPjWcdBT3V14Le5L2PjntjjWM3+EJzq2BcXDwV+v67KFNJic5pgA26cCmseYek6w==
   
-  react-native-timeago@^0.4.0:
-    version "0.4.0"
-    resolved "https://registry.yarnpkg.com/react-native-timeago/-/react-native-timeago-0.4.0.tgz#653b3a11217a3c6a331de99f9d614b3e58faf523"
-    integrity sha512-L/ephXkzv3cddmHVuBxDFa0gjTpw0Dfe9ccKOnHyjQJgdkapvmumCJtKSgDf1CatfNXaBRgz6ffxTZkRLxICfA==
+  react-native-swipe-gestures@*:
+    version "1.0.5"
+    resolved "https://registry.yarnpkg.com/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.5.tgz#a172cb0f3e7478ccd681fd36b8bfbcdd098bde7c"
+    integrity sha512-Ns7Bn9H/Tyw278+5SQx9oAblDZ7JixyzeOczcBK8dipQk2pD7Djkcfnf1nB/8RErAmMLL9iXgW0QHqiII8AhKw==
+  
+  react-native-video@^5.2.0:
+    version "5.2.0"
+    resolved "https://registry.yarnpkg.com/react-native-video/-/react-native-video-5.2.0.tgz#c3f2c541775f4fda7e0d26d75a6fb59819b13d5e"
+    integrity sha512-5SK1lxyzrCkZF+WuxUxLR1Pt65E0rsWB1w1GrGxSLdC9zWYBumcmuHl+wPJ7UQvznjaH2Ze7uU1R3arejI7+WQ==
+    dependencies:
+      keymirror "^0.1.1"
+      prop-types "^15.7.2"
+      shaka-player "^2.5.9"
   
   react-native-web@0.17.1:
     version "0.17.1"
@@ -6284,6 +6343,13 @@ Lockfile:
     version "1.2.0"
     resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.2.0.tgz#66c9a24a73f9fc28cbe66b09fed3d33dcaf1b424"
     integrity sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==
+  
+  shaka-player@^2.5.9:
+    version "2.5.23"
+    resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-2.5.23.tgz#db92d1c6cf2314f0180a2cec11b0e2f2560336f5"
+    integrity sha512-3MC9k0OXJGw8AZ4n/ZNCZS2yDxx+3as5KgH6Tx4Q5TRboTBBCu6dYPI5vp1DxKeyU12MBN1Zcbs7AKzXv2EnCg==
+    dependencies:
+      eme-encryption-scheme-polyfill "^2.0.1"
   
   shallow-clone@^3.0.0:
     version "3.0.1"

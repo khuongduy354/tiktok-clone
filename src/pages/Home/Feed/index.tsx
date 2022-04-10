@@ -1,5 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Image, Animated, Easing } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import {
+  Text,
+  Image,
+  Animated,
+  Easing,
+  Button,
+  TouchableOpacity,
+} from 'react-native';
 import Comment from '../Comment/list';
 
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
@@ -22,39 +29,25 @@ import {
 } from './styles';
 import { globalConfig } from '../../../../global';
 
-interface Item {
-  id: number;
-  email: string;
-  title: string;
-  likes: Array<number>;
-  comments: Array<Comment>;
-  uri: string;
-  public: boolean;
-}
-
+import { Item } from '../../../@types/VideoType';
+import UserContext from '../../../ContextManager/ContextProvider';
 interface Props {
   play: boolean;
   item: Item;
-  comments: any;
-  userId: number;
-  isLoggedIn: boolean;
+  outCb?: React.Dispatch<React.SetStateAction<Item | null>>;
 }
-const Feed: React.FC<Props> = ({
-  play,
-  item,
-  userId,
-  comments,
-  isLoggedIn,
-}) => {
+const Feed: React.FC<Props> = ({ play, item, outCb = null }) => {
   const spinValue = new Animated.Value(0);
+
+  const { userId, isLoggedIn } = useContext(UserContext);
+
   const [isLiked, setIsLiked] = useState(item.likes.includes(userId));
   const [likes, setLikes] = useState(item.likes);
   const [isVid, setIsVid] = useState(true);
   const [commentMode, setCommentMode] = useState(false);
-  const [commentState, setCommentState] = useState(comments);
-
+  const [commentState, setCommentState] = useState(item.comments);
   useEffect(() => {
-    setIsVid(item.uri.slice(-4) === '.mp4');
+    setIsVid(item.uri.includes('.mp4'));
   }, [item.uri]);
 
   const handleLike = () => {
@@ -102,20 +95,23 @@ const Feed: React.FC<Props> = ({
   const renderFeed = () => {
     return (
       <React.Fragment>
-        <LinearGradient
-          colors={['rgba(0,0,0,.3)', 'transparent']}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            height: '70%',
-          }}
-        />
+        {outCb && (
+          <TouchableOpacity
+            style={{
+              backgroundColor: 'blue',
+              position: 'absolute',
+              top: 50,
+              padding: 20,
+            }}
+            onPress={() => outCb(null)}
+          >
+            <Text style={{ color: 'white' }}>Out</Text>
+          </TouchableOpacity>
+        )}
         <Container>
           {isVid ? (
             <Video
-              source={{ uri: item.uri }}
+              source={play ? { uri: item.uri } : { uri: '' }}
               rate={1.0}
               volume={1.0}
               isMuted={false}
@@ -138,7 +134,7 @@ const Feed: React.FC<Props> = ({
           )}
         </Container>
         <Details>
-          <User>{item.email}</User>
+          <User>{item.email ? item.email : ''}</User>
           <MusicBox>
             <FontAwesome name="music" size={15} color="#f5f5f5" />
             <Music>{item.title}</Music>

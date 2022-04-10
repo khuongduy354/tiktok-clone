@@ -62,14 +62,7 @@ const Home: React.FC = () => {
       >
         {server.feed.map((item, index) => (
           <View key={item.id}>
-            <Feed
-              isLoggedIn={isLoggedIn}
-              comments={item.comments}
-              userId={userId}
-              //@ts-ignore
-              item={item}
-              play={index === active}
-            />
+            <Feed item={item} play={index === active} />
           </View>
         ))}
       </ViewPager>

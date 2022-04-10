@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-
+import mock_server from '../../../server.json';
+import VideoGrid from '../../components/HomeButton/VideoGrid';
 import * as ImagePicker from 'expo-image-picker';
 import {
   Image,
@@ -7,6 +8,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { UserType } from '../../@types/UserType';
@@ -32,14 +34,21 @@ import { globalConfig } from '../../../global';
 import { TextInput } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
 import UserContext from '../../ContextManager/ContextProvider';
+import { Item } from '../../@types/VideoType';
+import Feed from '../Home/Feed';
+import { Video } from 'expo-av';
+import { setVideoData } from '../../helper/setVideo';
+import ViewPager from '@react-native-community/viewpager';
 
 const Me: React.FC = () => {
   const [tempPassword, setTempPassword] = useState('');
   const [password, setPassword] = useState('');
+  const [selectedVid, setSelectedVid] = React.useState<Item | null>(null);
 
   const [avatarString, setAvatarString] = useState('');
   const [avatarImg, setAvatarImg] = useState(null);
   const [username, setUsername] = useState('');
+  const [videos, setVideos] = useState<Array<Item> | null>(null);
   const [bio, setBio] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
 
@@ -48,7 +57,9 @@ const Me: React.FC = () => {
 
   const [signupMode, setSignupMode] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
+  const [showVids, setShowVids] = useState(false);
 
+  const [refresh, refreshState] = useState(false);
   const {
     email,
     userId,
@@ -77,12 +88,27 @@ const Me: React.FC = () => {
       setPhoneNumber(user.phone_number);
     }
   };
-  const getVideo = () => {};
+  const getVideo = async () => {
+    const dest = globalConfig.API_URL + '/user/' + email;
+    const res = await fetch(dest);
+    if (res.ok) {
+      const data = await res.json();
+      const user = data.user;
+      let feedData = [];
+      for (let video of user.videos) {
+        const resultObj = setVideoData(video as any);
+        feedData.push(resultObj);
+      }
+      setVideos(feedData);
+    } else {
+      alert('Cant login');
+    }
+  };
   const login = () => {
     const _function = async () => {
       const dest = globalConfig.API_URL + '/user/login';
       const options = {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -93,6 +119,7 @@ const Me: React.FC = () => {
         const data = await res.json();
         const user = data.user;
         setUserData(user);
+        await getVideo();
         setIsLoggedIn(true);
       } else {
         alert('Cant login');
@@ -249,6 +276,25 @@ const Me: React.FC = () => {
       </View>
     );
   };
+  const renderSelectedVideo = () => {
+    return (
+      <ViewPager orientation="vertical" style={{ flex: 1 }} initialPage={0}>
+        <View>
+          {/* @ts-ignore */}
+          <Feed play={true} item={selectedVid} outCb={setSelectedVid} />
+        </View>
+      </ViewPager>
+    );
+  };
+  const renderGrid = () => {
+    return (
+      <VideoGrid
+        videos={videos}
+        selectedVid={selectedVid}
+        setSelectedVid={setSelectedVid}
+      />
+    );
+  };
   const renderProfile = () => {
     return (
       <Container>
@@ -286,7 +332,19 @@ const Me: React.FC = () => {
             <ProfileColumn>
               <ProfileEdit>
                 <ProfileText>
-                  <Button title="See All videos" onPress={getVideo} />
+                  {showVids ? (
+                    <Button
+                      title="Collapse"
+                      onPress={() => {
+                        setShowVids(false);
+                      }}
+                    />
+                  ) : (
+                    <Button
+                      title="See All videos"
+                      onPress={() => setShowVids(true)}
+                    />
+                  )}
                 </ProfileText>
               </ProfileEdit>
             </ProfileColumn>
@@ -296,15 +354,21 @@ const Me: React.FC = () => {
             </StatsText>
           </Content>
         </ScrollView>
+        {showVids && renderGrid()}
       </Container>
     );
   };
   const renderLogin = () => {
     return (
       <Container style={{ display: 'flex', justifyContent: 'center' }}>
-        <TextInput placeholder="Email here" onChangeText={setEmail} />
+        <TextInput
+          defaultValue="khuongduy354@gmail.com"
+          placeholder="Email here"
+          onChangeText={setEmail}
+        />
         <TextInput
           placeholder="Password here"
+          defaultValue="1234567891Duy"
           onChangeText={setPassword}
           secureTextEntry={true}
         />
@@ -335,6 +399,8 @@ const Me: React.FC = () => {
   return isLoggedIn
     ? isEdit
       ? renderEditProfile()
+      : selectedVid
+      ? renderSelectedVideo()
       : renderProfile()
     : renderLogin();
 };
