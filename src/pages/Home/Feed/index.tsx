@@ -34,21 +34,21 @@ import { globalConfig } from '../../../../global';
 
 import { Item } from '../../../@types/VideoType';
 import UserContext from '../../../ContextManager/ContextProvider';
-import { wait } from '../../../helper/wait';
 interface Props {
   play: boolean;
   item: Item;
   outCb?: React.Dispatch<React.SetStateAction<Item | null>>;
   fetchVideo?: () => {};
+  tab: number;
 }
 const Feed: React.FC<Props> = ({
   play,
   item,
   outCb = null,
+  tab,
   fetchVideo = () => {},
 }) => {
   const spinValue = new Animated.Value(0);
-
   const { userId, isLoggedIn, email } = useContext(UserContext);
 
   const [isLiked, setIsLiked] = useState(item.likes.includes(userId));
@@ -114,12 +114,14 @@ const Feed: React.FC<Props> = ({
         <ScrollView
           contentContainerStyle={{ flex: 1 }}
           refreshControl={
-            <RefreshControl
-              onRefresh={() => {
-                fetchVideo();
-              }}
-              refreshing={refreshing}
-            />
+            tab === 0 && (
+              <RefreshControl
+                onRefresh={() => {
+                  fetchVideo();
+                }}
+                refreshing={refreshing}
+              />
+            )
           }
         >
           {outCb && (
