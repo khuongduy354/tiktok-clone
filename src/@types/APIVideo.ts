@@ -7,6 +7,7 @@ export type APIVideo = {
   published_at: null;
   title: '';
   hearts: [8];
+  author_avatar: '';
   comments: [
     '8//this is the second  comment // 2022-03-22',
     '8//this is the third  comment // 2022-03-22',

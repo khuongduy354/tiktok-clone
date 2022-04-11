@@ -21,20 +21,20 @@ const Home: React.FC = () => {
     setIsLoggedIn,
     setEmail,
   } = useContext(UserContext);
-  useEffect(() => {
-    const func_ = async () => {
-      const result = await fetch(globalConfig.API_URL + '/video/feed/all');
-      if (result.ok) {
-        const data = await result.json();
-        let feedData = [];
-        for (let video of data.feed) {
-          const resultObj = setVideoData(video as any);
-          feedData.push(resultObj);
-        }
-        setServer({ feed: feedData });
+  const fetchVideo = async () => {
+    const result = await fetch(globalConfig.API_URL + '/video/feed/all');
+    if (result.ok) {
+      const data = await result.json();
+      let feedData = [];
+      for (let video of data.feed) {
+        const resultObj = setVideoData(video as any);
+        feedData.push(resultObj);
       }
-    };
-    func_();
+      setServer({ feed: feedData });
+    }
+  };
+  useEffect(() => {
+    fetchVideo();
   }, []);
   const [tab, setTab] = useState(1);
   const [active, setActive] = useState(0);
@@ -42,13 +42,13 @@ const Home: React.FC = () => {
   return (
     <Container>
       <Header>
-        <Tab onPress={() => setTab(1)}>
+        {/* <Tab onPress={() => setTab(1)}>
           <Text active={tab === 1}>Following</Text>
         </Tab>
         <Separator>|</Separator>
         <Tab onPress={() => setTab(2)}>
           <Text active={tab === 2}>For You</Text>
-        </Tab>
+        </Tab> */}
       </Header>
       <ViewPager
         onPageSelected={e => {
@@ -60,7 +60,7 @@ const Home: React.FC = () => {
       >
         {server.feed.map((item, index) => (
           <View key={item.id}>
-            <Feed item={item} play={index === active} />
+            <Feed fetchVideo={fetchVideo} item={item} play={index === active} />
           </View>
         ))}
       </ViewPager>

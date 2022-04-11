@@ -13,6 +13,8 @@ export interface Item {
   author_id: number;
   uri: string;
   public: boolean;
+  author_avatar: string;
+  author_email: string;
 }
 
 export type UserComment = {

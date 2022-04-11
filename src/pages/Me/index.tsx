@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import mock_server from '../../../server.json';
 import VideoGrid from '../../components/HomeButton/VideoGrid';
 import * as ImagePicker from 'expo-image-picker';
 import {
   Image,
   Linking,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -59,7 +59,7 @@ const Me: React.FC = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [showVids, setShowVids] = useState(false);
 
-  const [refresh, refreshState] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
   const {
     email,
     userId,
@@ -297,65 +297,77 @@ const Me: React.FC = () => {
   };
   const renderProfile = () => {
     return (
-      <Container>
-        <Header>
-          <Title>{username}</Title>
-        </Header>
-        <ScrollView>
-          <Content>
-            <Image
-              style={
-                StyleSheet.create({
-                  image: {
-                    height: 120,
-                    width: 120,
-                    borderRadius: 50,
-                  },
-                }).image
-              }
-              source={{
-                uri: avatarString,
-              }}
-            />
-            <Username>{email}</Username>
-            <Stats>
-              <StatsColumn>
-                <StatsNumber>{followings.toString()}</StatsNumber>
-                <StatsText>Following</StatsText>
-              </StatsColumn>
-              <Separator>|</Separator>
-              <StatsColumn>
-                <StatsNumber>{followers.toString()}</StatsNumber>
-                <StatsText>Followers</StatsText>
-              </StatsColumn>
-            </Stats>
-            <ProfileColumn>
-              <ProfileEdit>
-                <ProfileText>
-                  {showVids ? (
-                    <Button
-                      title="Collapse"
-                      onPress={() => {
-                        setShowVids(false);
-                      }}
-                    />
-                  ) : (
-                    <Button
-                      title="See All videos"
-                      onPress={() => setShowVids(true)}
-                    />
-                  )}
-                </ProfileText>
-              </ProfileEdit>
-            </ProfileColumn>
+      <ScrollView
+        contentContainerStyle={{ flex: 1 }}
+        refreshControl={
+          <RefreshControl
+            onRefresh={() => {
+              login();
+            }}
+            refreshing={refreshing}
+          />
+        }
+      >
+        <Container>
+          <Header>
+            <Title>{username}</Title>
+          </Header>
+          <ScrollView>
+            <Content>
+              <Image
+                style={
+                  StyleSheet.create({
+                    image: {
+                      height: 120,
+                      width: 120,
+                      borderRadius: 50,
+                    },
+                  }).image
+                }
+                source={{
+                  uri: avatarString,
+                }}
+              />
+              <Username>{email}</Username>
+              <Stats>
+                <StatsColumn>
+                  <StatsNumber>{followings.toString()}</StatsNumber>
+                  <StatsText>Following</StatsText>
+                </StatsColumn>
+                <Separator>|</Separator>
+                <StatsColumn>
+                  <StatsNumber>{followers.toString()}</StatsNumber>
+                  <StatsText>Followers</StatsText>
+                </StatsColumn>
+              </Stats>
+              <ProfileColumn>
+                <ProfileEdit>
+                  <ProfileText>
+                    {showVids ? (
+                      <Button
+                        title="Collapse"
+                        onPress={() => {
+                          setShowVids(false);
+                        }}
+                      />
+                    ) : (
+                      <Button
+                        title="See All videos"
+                        onPress={() => setShowVids(true)}
+                      />
+                    )}
+                  </ProfileText>
+                </ProfileEdit>
+              </ProfileColumn>
 
-            <StatsText onPress={() => setIsEdit(true)}>
-              Tap to edit profile
-            </StatsText>
-          </Content>
-        </ScrollView>
-        {showVids && renderGrid()}
-      </Container>
+              <StatsText onPress={() => setIsEdit(true)}>
+                Tap to edit profile
+              </StatsText>
+            </Content>
+          </ScrollView>
+          {showVids && renderGrid()}
+        </Container>
+      </ScrollView>
     );
   };
   const renderLogin = () => {

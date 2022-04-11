@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  RefreshControl,
 } from 'react-native';
 import Comment from '../Comment/list';
 
@@ -33,13 +34,19 @@ import { globalConfig } from '../../../../global';
 
 import { Item } from '../../../@types/VideoType';
 import UserContext from '../../../ContextManager/ContextProvider';
-import { optimizeVid } from '../../../helper/optimizeVid';
+import { wait } from '../../../helper/wait';
 interface Props {
   play: boolean;
   item: Item;
   outCb?: React.Dispatch<React.SetStateAction<Item | null>>;
+  fetchVideo?: () => {};
 }
-const Feed: React.FC<Props> = ({ play, item, outCb = null }) => {
+const Feed: React.FC<Props> = ({
+  play,
+  item,
+  outCb = null,
+  fetchVideo = () => {},
+}) => {
   const spinValue = new Animated.Value(0);
 
   const { userId, isLoggedIn, email } = useContext(UserContext);
@@ -98,139 +105,153 @@ const Feed: React.FC<Props> = ({ play, item, outCb = null }) => {
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg'],
   });
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
   const renderFeed = () => {
     return (
       <React.Fragment>
-        {outCb && (
-          <TouchableOpacity
-            style={{
-              backgroundColor: 'blue',
-              position: 'absolute',
-              top: 50,
-              padding: 20,
-            }}
-            onPress={() => outCb(null)}
-          >
-            <Text style={{ color: 'white' }}>Out</Text>
-          </TouchableOpacity>
-        )}
-        <Container>
-          {isVid ? (
-            <Video
-              source={
-                play
-                  ? {
-                      uri: item.uri,
-                    }
-                  : { uri: '' }
-              }
-              rate={1.0}
-              volume={1.0}
-              isMuted={false}
-              resizeMode="cover"
-              shouldPlay={play}
-              isLooping
+        <ScrollView
+          contentContainerStyle={{ flex: 1 }}
+          refreshControl={
+            <RefreshControl
+              onRefresh={() => {
+                fetchVideo();
+              }}
+              refreshing={refreshing}
+            />
+          }
+        >
+          {outCb && (
+            <TouchableOpacity
               style={{
-                width: '100%',
-                height: '100%',
+                backgroundColor: 'blue',
+                position: 'absolute',
+                top: 50,
+                padding: 20,
               }}
-            />
-          ) : (
-            <Image
-              style={{
-                width: '100%',
-                height: '100%',
-              }}
-              source={{ uri: item.uri }}
-            />
-          )}
-        </Container>
-        <Details>
-          <User>{item.email ? item.email : ''}</User>
-          <MusicBox>
-            <FontAwesome name="music" size={15} color="#f5f5f5" />
-            <Music>{item.title}</Music>
-          </MusicBox>
-        </Details>
-        <Actions>
-          <BoxAction>
-            <AntDesign
-              onPress={handleLike}
-              style={{ alignSelf: 'center' }}
-              name="heart"
-              size={35}
-              color={`${isLiked ? '#F56D91' : '#fff'}`}
-            />
-            <TextAction>{likes.length}</TextAction>
-          </BoxAction>
-          <BoxAction>
-            <FontAwesome
-              onPress={() => {
-                setCommentMode(true);
-              }}
-              style={{ alignSelf: 'center' }}
-              name="commenting"
-              size={35}
-              color="#fff"
-            />
-            <TextAction>{commentState.length}</TextAction>
-          </BoxAction>
-          {isLoggedIn && userId === item.author_id && (
-            <BoxAction>
-              <AntDesign
-                style={{ alignSelf: 'center' }}
-                size={35}
-                color="#fff"
-                onPress={() => {
-                  setSettingMode(true);
-                }}
-                name="setting"
-              />
-            </BoxAction>
-          )}
-          <BoxAction>
-            <Animated.View
-              style={{
-                borderRadius: 50,
-                borderWidth: 12,
-                borderColor: '#292929',
-              }}
+              onPress={() => outCb(null)}
             >
+              <Text style={{ color: 'white' }}>Out</Text>
+            </TouchableOpacity>
+          )}
+          <Container>
+            {isVid ? (
+              <Video
+                source={
+                  play
+                    ? {
+                        uri: item.uri,
+                      }
+                    : { uri: '' }
+                }
+                rate={1.0}
+                volume={1.0}
+                isMuted={false}
+                resizeMode="cover"
+                shouldPlay={play}
+                isLooping
+                style={{
+                  width: '100%',
+                  height: '100%',
+                }}
+              />
+            ) : (
               <Image
                 style={{
-                  width: 35,
-                  height: 35,
-                  borderRadius: 25,
+                  width: '100%',
+                  height: '100%',
                 }}
-                source={{
-                  uri:
-                    'https://th.bing.com/th/id/R.5423477a17d752e99d68047743d9de11?rik=5BK8zmsuAHk2fw&riu=http%3a%2f%2fcliparts.co%2fcliparts%2f8TE%2f48G%2f8TE48GETa.jpg&ehk=Be0xy8WENPNv62qEV8lk%2brJNaV%2bXKc3l73g5Uzew0%2f8%3d&risl=&pid=ImgRaw&r=0',
+                source={{ uri: item.uri }}
+              />
+            )}
+          </Container>
+          <Details>
+            <User>{item.author_email ? item.author_email : ''}</User>
+            <MusicBox>
+              <FontAwesome name="music" size={15} color="#f5f5f5" />
+              <Music>{item.title}</Music>
+            </MusicBox>
+          </Details>
+          <Actions>
+            <BoxAction>
+              <AntDesign
+                onPress={handleLike}
+                style={{ alignSelf: 'center' }}
+                name="heart"
+                size={35}
+                color={`${isLiked ? '#F56D91' : '#fff'}`}
+              />
+              <TextAction>{likes.length}</TextAction>
+            </BoxAction>
+            <BoxAction>
+              <FontAwesome
+                onPress={() => {
+                  setCommentMode(true);
+                }}
+                style={{ alignSelf: 'center' }}
+                name="commenting"
+                size={35}
+                color="#fff"
+              />
+              <TextAction>{commentState.length}</TextAction>
+            </BoxAction>
+            {isLoggedIn && userId === item.author_id && (
+              <BoxAction>
+                <AntDesign
+                  style={{ alignSelf: 'center' }}
+                  size={35}
+                  color="#fff"
+                  onPress={() => {
+                    setSettingMode(true);
+                  }}
+                  name="setting"
+                />
+              </BoxAction>
+            )}
+            <BoxAction>
+              <Animated.View
+                style={{
+                  borderRadius: 50,
+                  borderWidth: 12,
+                  borderColor: '#292929',
+                }}
+              >
+                <Image
+                  style={{
+                    width: 35,
+                    height: 35,
+                    borderRadius: 25,
+                  }}
+                  source={{
+                    uri: item.author_avatar,
+                  }}
+                />
+              </Animated.View>
+
+              <Lottie
+                source={musicFly}
+                progress={play ? spinValue : 0}
+                style={{
+                  width: 150,
+                  position: 'absolute',
+                  bottom: 0,
+                  right: 0,
                 }}
               />
-            </Animated.View>
-
-            <Lottie
-              source={musicFly}
-              progress={play ? spinValue : 0}
-              style={{
-                width: 150,
-                position: 'absolute',
-                bottom: 0,
-                right: 0,
-              }}
-            />
-          </BoxAction>
-        </Actions>
-        <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,.4)']}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: '50%',
-          }}
-        />
+            </BoxAction>
+          </Actions>
+          <LinearGradient
+            colors={['transparent', 'rgba(0,0,0,.4)']}
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: '50%',
+            }}
+          />
+        </ScrollView>
       </React.Fragment>
     );
   };
