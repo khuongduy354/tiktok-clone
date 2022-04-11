@@ -31,6 +31,7 @@ import { globalConfig } from '../../../../global';
 
 import { Item } from '../../../@types/VideoType';
 import UserContext from '../../../ContextManager/ContextProvider';
+import { optimizeVid } from '../../../helper/optimizeVid';
 interface Props {
   play: boolean;
   item: Item;
@@ -111,7 +112,13 @@ const Feed: React.FC<Props> = ({ play, item, outCb = null }) => {
         <Container>
           {isVid ? (
             <Video
-              source={play ? { uri: item.uri } : { uri: '' }}
+              source={
+                play
+                  ? {
+                      uri: item.uri,
+                    }
+                  : { uri: '' }
+              }
               rate={1.0}
               volume={1.0}
               isMuted={false}
