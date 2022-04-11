@@ -31,9 +31,7 @@ const Home: React.FC = () => {
           const resultObj = setVideoData(video as any);
           feedData.push(resultObj);
         }
-        // console.log(feedData);
         setServer({ feed: feedData });
-        console.log('ok');
       }
     };
     func_();

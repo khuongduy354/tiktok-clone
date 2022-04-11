@@ -10,6 +10,7 @@ export interface Item {
   title: string;
   likes: Array<number>;
   comments: Array<UserComment>;
+  author_id: number;
   uri: string;
   public: boolean;
 }

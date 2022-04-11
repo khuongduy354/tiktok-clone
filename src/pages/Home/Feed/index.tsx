@@ -6,6 +6,8 @@ import {
   Easing,
   Button,
   TouchableOpacity,
+  View,
+  ScrollView,
 } from 'react-native';
 import Comment from '../Comment/list';
 
@@ -40,13 +42,16 @@ interface Props {
 const Feed: React.FC<Props> = ({ play, item, outCb = null }) => {
   const spinValue = new Animated.Value(0);
 
-  const { userId, isLoggedIn } = useContext(UserContext);
+  const { userId, isLoggedIn, email } = useContext(UserContext);
 
   const [isLiked, setIsLiked] = useState(item.likes.includes(userId));
   const [likes, setLikes] = useState(item.likes);
   const [isVid, setIsVid] = useState(true);
+
   const [commentMode, setCommentMode] = useState(false);
   const [commentState, setCommentState] = useState(item.comments);
+
+  const [settingMode, setSettingMode] = useState(false);
   useEffect(() => {
     setIsVid(item.uri.includes('.mp4'));
   }, [item.uri]);
@@ -170,6 +175,19 @@ const Feed: React.FC<Props> = ({ play, item, outCb = null }) => {
             />
             <TextAction>{commentState.length}</TextAction>
           </BoxAction>
+          {isLoggedIn && userId === item.author_id && (
+            <BoxAction>
+              <AntDesign
+                style={{ alignSelf: 'center' }}
+                size={35}
+                color="#fff"
+                onPress={() => {
+                  setSettingMode(true);
+                }}
+                name="setting"
+              />
+            </BoxAction>
+          )}
           <BoxAction>
             <Animated.View
               style={{
@@ -244,6 +262,63 @@ const Feed: React.FC<Props> = ({ play, item, outCb = null }) => {
     }
   };
 
+  const deleteVideo = async () => {
+    if (!isLoggedIn) return alert('please login');
+    const dest = globalConfig.API_URL + '/video';
+    const options = {
+      method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        video_id: item.id,
+      }),
+    };
+    let res = await fetch(dest, options);
+    if (res.ok) {
+      alert('video deleted');
+    } else {
+      alert('Cannot delete video');
+    }
+  };
+  //RENDERER
+  const renderSetting = () => {
+    return (
+      <View
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          zIndex: 1000,
+          flex: 1,
+          backgroundColor: '#FFF',
+          paddingTop: 20,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            deleteVideo();
+          }}
+          style={{
+            backgroundColor: 'red',
+            padding: 5,
+            marginBottom: 100,
+            width: 200,
+          }}
+        >
+          <Text style={{ color: 'white' }}>Delete Video</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setSettingMode(false);
+          }}
+          style={{ backgroundColor: 'pink', padding: 5 }}
+        >
+          <Text style={{ color: 'white' }}>Out</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
   const renderComment = () => {
     return (
       <Comment
@@ -257,7 +332,15 @@ const Feed: React.FC<Props> = ({ play, item, outCb = null }) => {
       />
     );
   };
-  return <>{commentMode ? renderComment() : renderFeed()}</>;
+  return (
+    <>
+      {commentMode
+        ? renderComment()
+        : settingMode
+        ? renderSetting()
+        : renderFeed()}
+    </>
+  );
 };
 
 export default Feed;

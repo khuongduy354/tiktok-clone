@@ -9,6 +9,6 @@ export const setVideoData = (video: APIVideo) => {
   resultObj.comments = video.comments;
   resultObj.uri = optimizeVid(video.video_link);
   resultObj.public = video.public;
-  resultObj.email = video.author_email;
+  resultObj.author_id = video.author_id;
   return resultObj;
 };
