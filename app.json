@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "ticktok-clone-app",
+    "name": "Tóp Tóp",
     "slug": "ticktopcloneapp",
     "privacy": "public",
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/icon.png",
+    "icon": "./src/assets/icon.jpg",
     "splash": {
       "image": "./src/assets/splash.png",
       "resizeMode": "cover",
@@ -18,6 +18,9 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.duy.topstops"
     }
   }
 }

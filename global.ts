@@ -1,3 +1,3 @@
 export const globalConfig = {
-  API_URL: 'http://192.168.1.8:8000/tiktok/v1',
+  API_URL: 'https://tops-tops-api.herokuapp.com/tiktok/v1',
 };
