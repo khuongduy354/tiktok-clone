@@ -38,7 +38,7 @@ import { Item } from '../../@types/VideoType';
 import Feed from '../Home/Feed';
 import { Video } from 'expo-av';
 import { setVideoData } from '../../helper/setVideo';
-import ViewPager from '@react-native-community/viewpager';
+import ViewPager from 'react-native-pager-view';
 
 const Me: React.FC = () => {
   const [tempPassword, setTempPassword] = useState('');
