@@ -3,7 +3,7 @@ import UserContext from '../../ContextManager/ContextProvider';
 import { globalConfig } from '../../../global';
 import { View } from 'react-native';
 
-import ViewPager from 'react-native-pager-view';
+import ViewPager from '@react-native-community/viewpager';
 
 import mock_server from '../../../server.json';
 import Feed from './Feed';

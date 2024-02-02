@@ -233,7 +233,7 @@ const Feed: React.FC<Props> = ({
 
               <Lottie
                 source={musicFly}
-                progress={play ? parseInt(JSON.stringify(spinValue)) : 0}
+                progress={play ? spinValue : 0}
                 style={{
                   width: 150,
                   position: 'absolute',
