@@ -109,6 +109,7 @@ const Me: React.FC = () => {
   const login = () => {
     const _function = async () => {
       const dest = globalConfig.API_URL + '/user/login';
+      console.log(dest);
       const options = {
         method: 'POST',
         headers: {
