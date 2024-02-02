@@ -1,4 +1,5 @@
 node_modules/
+android
 .expo/
 package-lock.json
 npm-debug.*
