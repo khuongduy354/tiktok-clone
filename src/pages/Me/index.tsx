@@ -380,13 +380,13 @@ const Me: React.FC = () => {
     return (
       <Container style={{ display: 'flex', justifyContent: 'center' }}>
         <TextInput
-          defaultValue="khuongduy354@gmail.com"
+          defaultValue="duy@gmail.com"
           placeholder="Email here"
           onChangeText={setEmail}
         />
         <TextInput
           placeholder="Password here"
-          defaultValue="1234567891Duy"
+          defaultValue="123456"
           onChangeText={setPassword}
           secureTextEntry={true}
         />

@@ -20,9 +20,14 @@ const Home: React.FC = () => {
     isLoggedIn,
     setIsLoggedIn,
     setEmail,
+    token,
   } = useContext(UserContext);
   const fetchVideo = async () => {
-    const result = await fetch(globalConfig.API_URL + '/videos/feed/all');
+    const url = globalConfig.API_URL + '/videos/feed/all';
+    console.log(url);
+    const result = await fetch(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (result.ok) {
       const data = await result.json();
       let feedData = [];

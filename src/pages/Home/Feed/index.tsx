@@ -60,9 +60,9 @@ const Feed: React.FC<Props> = ({
   const [commentState, setCommentState] = useState(item.comments);
 
   const [settingMode, setSettingMode] = useState(false);
-  useEffect(() => {
-    setIsVid(item.uri.includes('.mp4'));
-  }, [item.uri]);
+  // useEffect(() => {
+  //   setIsVid(item.uri.includes('.mp4'));
+  // }, [item.uri]);
 
   const handleLike = () => {
     if (!isLoggedIn) return alert('please login');
