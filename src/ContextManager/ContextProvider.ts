@@ -6,6 +6,8 @@ type ContextType = {
   isLoggedIn: boolean;
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
+  token: string;
+  setToken: React.Dispatch<React.SetStateAction<string>>;
 };
 const UserContext = React.createContext<ContextType>({
   email: '',
@@ -14,6 +16,8 @@ const UserContext = React.createContext<ContextType>({
   isLoggedIn: false,
   setIsLoggedIn: () => {},
   setEmail: () => {},
+  token: '',
+  setToken: () => {},
 });
 export const UserProvider = UserContext.Provider;
 export const UserConsumer = UserContext.Consumer;

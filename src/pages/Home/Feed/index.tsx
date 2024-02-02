@@ -48,6 +48,7 @@ const Feed: React.FC<Props> = ({
   tab,
   fetchVideo = () => {},
 }) => {
+  const { token } = useContext(UserContext);
   const spinValue = new Animated.Value(0);
   const { userId, isLoggedIn, email } = useContext(UserContext);
 
@@ -68,17 +69,18 @@ const Feed: React.FC<Props> = ({
     const _function = async () => {
       //@ts-ignore
       setIsLiked(!isLiked);
-      const dest = globalConfig.API_URL + '/video/like';
+      const dest =
+        globalConfig.API_URL + '/videos/' + item.id.toString() + '/like';
       const options = {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ author_id: userId, video_id: item.id }),
       };
       const res = await fetch(dest, options);
       if (res.ok) {
-        const dest = globalConfig.API_URL + '/video' + `/${item.id}`;
+        const dest = globalConfig.API_URL + '/videos' + `/${item.id}`;
         let result = await fetch(dest);
         result = await result.json();
         //@ts-ignore
@@ -259,21 +261,20 @@ const Feed: React.FC<Props> = ({
   };
   const submitComment = async (content: string) => {
     if (!isLoggedIn) return alert('please login');
-    const dest = globalConfig.API_URL + '/video/comment';
+    const dest = globalConfig.API_URL + '/videos/' + item.id + '/comment';
     const options = {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
       headers: {
         'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
       },
       body: JSON.stringify({
-        user_id: userId,
-        video_id: item.id,
-        content: content,
+        content,
       }),
     };
     let res = await fetch(dest, options);
     if (res.ok) {
-      const dest = globalConfig.API_URL + '/video/' + item.id;
+      const dest = globalConfig.API_URL + '/videos/' + item.id;
       res = await fetch(dest);
       if (res.ok) {
         res = await res.json();
@@ -287,16 +288,13 @@ const Feed: React.FC<Props> = ({
 
   const deleteVideo = async () => {
     if (!isLoggedIn) return alert('please login');
-    const dest = globalConfig.API_URL + '/video';
+    const dest = globalConfig.API_URL + '/videos/' + item.id;
     const options = {
       method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
       headers: {
         'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
       },
-      body: JSON.stringify({
-        user_id: userId,
-        video_id: item.id,
-      }),
     };
     let res = await fetch(dest, options);
     if (res.ok) {

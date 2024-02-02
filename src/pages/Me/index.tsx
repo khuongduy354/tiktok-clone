@@ -41,6 +41,8 @@ import { setVideoData } from '../../helper/setVideo';
 import ViewPager from '@react-native-community/viewpager';
 
 const Me: React.FC = () => {
+  const { setToken } = useContext(UserContext);
+
   const [tempPassword, setTempPassword] = useState('');
   const [password, setPassword] = useState('');
   const [selectedVid, setSelectedVid] = React.useState<Item | null>(null);
@@ -89,7 +91,7 @@ const Me: React.FC = () => {
     }
   };
   const getVideo = async () => {
-    const dest = globalConfig.API_URL + '/user/' + email;
+    const dest = globalConfig.API_URL + '/users/' + email;
     const res = await fetch(dest);
     if (res.ok) {
       const data = await res.json();
@@ -117,6 +119,7 @@ const Me: React.FC = () => {
       const res = await fetch(dest, options);
       if (res.ok) {
         const data = await res.json();
+        setToken(data.token);
         const user = data.user;
         setUserData(user);
         await getVideo();
@@ -143,7 +146,9 @@ const Me: React.FC = () => {
       } else {
         let response = await fetch(dest, options);
         if (response.ok) {
-          let result = await fetch(globalConfig.API_URL + '/user/' + email);
+          setToken((await response.json()).token);
+
+          let result = await fetch(globalConfig.API_URL + '/users' + email);
           if (result.ok) {
             const data = await result.json();
             const user = data.user;

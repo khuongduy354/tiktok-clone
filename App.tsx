@@ -6,6 +6,7 @@ const App: React.FC = () => {
   const [email, setEmail] = useState('');
   const [userId, setUserId] = useState(-1);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState('');
   return (
     <UserProvider
       value={{
@@ -15,6 +16,8 @@ const App: React.FC = () => {
         isLoggedIn: isLoggedIn,
         setIsLoggedIn: setIsLoggedIn,
         setEmail: setEmail,
+        token,
+        setToken,
       }}
     >
       <Routes />

@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { globalConfig } from '../../../global';
 
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  Button,
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, Button } from 'react-native';
 
 import { UserType } from '../../@types/UserType';
 
@@ -47,7 +40,7 @@ const UserProfile = ({ route }) => {
   };
   useEffect(() => {
     const func_ = async () => {
-      const dest = globalConfig.API_URL + '/user/' + `${email}`;
+      const dest = globalConfig.API_URL + '/users/' + `${email}`;
       const res = await fetch(dest);
       if (res.ok) {
         const data = await res.json();

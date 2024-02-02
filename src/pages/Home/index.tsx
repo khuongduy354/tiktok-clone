@@ -22,7 +22,7 @@ const Home: React.FC = () => {
     setEmail,
   } = useContext(UserContext);
   const fetchVideo = async () => {
-    const result = await fetch(globalConfig.API_URL + '/video/feed/all');
+    const result = await fetch(globalConfig.API_URL + '/videos/feed/all');
     if (result.ok) {
       const data = await result.json();
       let feedData = [];
