@@ -35,6 +35,7 @@ const UploadVid = () => {
   const [image, setImage] = useState(null);
   const [isSelected, setIsSelected] = useState(false);
 
+  const { token } = useContext(UserContext);
   const uploadVideo = async () => {
     let formData = new FormData();
     //@ts-ignore
@@ -42,20 +43,22 @@ const UploadVid = () => {
       const obj = {
         name: 'myname',
         //@ts-ignore
-        uri: video ? video.uri : image.uri,
+        uri: video ? video.assets[0].uri : image.assets[0].uri,
         //@ts-ignore
         type: video ? 'video/mp4' : 'image/png',
       };
 
       //@ts-ignore
       formData.append('videoFile', obj);
-      formData.append('title', JSON.stringify(title));
-      formData.append('email', JSON.stringify(email));
+      formData.append('title', title);
+      // formData.append('email', JSON.stringify(email));
 
-      let result = await fetch(globalConfig.API_URL + '/video', {
+      const url = globalConfig.API_URL + '/video';
+      console.log('url', url);
+      let result = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
         },
         body: formData,
       });
