@@ -3,7 +3,7 @@ import Routes from './src/routes';
 import { UserProvider } from './src/ContextManager/ContextProvider';
 
 const App: React.FC = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('duy@gmail.com');
   const [userId, setUserId] = useState(-1);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState('');

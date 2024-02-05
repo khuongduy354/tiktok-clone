@@ -72,7 +72,7 @@ const Feed: React.FC<Props> = ({
       const dest =
         globalConfig.API_URL + '/videos/' + item.id.toString() + '/like';
       const options = {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        method: isLiked ? 'DELETE' : 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,

@@ -12,6 +12,8 @@ import { Container, Header, Text, Tab, Separator } from './styles';
 import { setVideoData } from '../../helper/setVideo';
 
 const Home: React.FC = () => {
+  const [tab, setTab] = useState(1);
+  const [active, setActive] = useState(0);
   const [server, setServer] = useState(mock_server);
   const {
     email,
@@ -23,7 +25,8 @@ const Home: React.FC = () => {
     token,
   } = useContext(UserContext);
   const fetchVideo = async () => {
-    const url = globalConfig.API_URL + '/videos/feed/all';
+    const option = tab === 1 ? 'all' : 'following';
+    const url = globalConfig.API_URL + '/videos/feed/' + option;
     console.log(url);
     const result = await fetch(url, {
       headers: { Authorization: `Bearer ${token}` },
@@ -38,22 +41,20 @@ const Home: React.FC = () => {
       setServer({ feed: feedData });
     }
   };
+
   useEffect(() => {
     fetchVideo();
-  }, []);
-  const [tab, setTab] = useState(1);
-  const [active, setActive] = useState(0);
-
+  }, [tab]);
   return (
     <Container>
       <Header>
-        {/* <Tab onPress={() => setTab(1)}>
-          <Text active={tab === 1}>Following</Text>
+        <Tab onPress={() => setTab(1)}>
+          <Text active={tab === 1}>All</Text>
         </Tab>
         <Separator>|</Separator>
         <Tab onPress={() => setTab(2)}>
-          <Text active={tab === 2}>For You</Text>
-        </Tab> */}
+          <Text active={tab === 2}>Following</Text>
+        </Tab>
       </Header>
       <ViewPager
         onPageSelected={e => {
