@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import VideoGrid from '../../components/HomeButton/VideoGrid';
 import * as ImagePicker from 'expo-image-picker';
 import {
@@ -39,18 +39,17 @@ import Feed from '../Home/Feed';
 import { Video } from 'expo-av';
 import { setVideoData } from '../../helper/setVideo';
 import ViewPager from 'react-native-pager-view';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Me: React.FC = () => {
-  const { setToken } = useContext(UserContext);
-
-  const [tempPassword, setTempPassword] = useState('');
-  const [password, setPassword] = useState('');
+  const [tempPassword, setTempPassword] = useState('123456');
+  const [password, setPassword] = useState('123456');
   const [selectedVid, setSelectedVid] = React.useState<Item | null>(null);
 
   const [avatarString, setAvatarString] = useState('');
   const [avatarImg, setAvatarImg] = useState(null);
   const [username, setUsername] = useState('');
-  const [videos, setVideos] = useState<Array<Item> | null>(null);
+  const [videos, setVideos] = useState<Array<Item>>([]);
   const [bio, setBio] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
 
@@ -69,8 +68,13 @@ const Me: React.FC = () => {
     isLoggedIn,
     setIsLoggedIn,
     setEmail,
+    setToken,
+    token,
   } = useContext(UserContext);
 
+  useEffect(() => {
+    isLoggedIn && getVideo();
+  }, [showVids]);
   const setUserData = (user: UserType, isUpdate = false) => {
     if (!isUpdate) {
       setEmail(user.email);
@@ -91,25 +95,26 @@ const Me: React.FC = () => {
     }
   };
   const getVideo = async () => {
-    const dest = globalConfig.API_URL + '/users/' + email;
-    const res = await fetch(dest);
+    const dest = globalConfig.API_URL + '/videos';
+    const res = await fetch(dest, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     if (res.ok) {
       const data = await res.json();
-      const user = data.user;
+      const videos = data.videos;
       let feedData = [];
-      for (let video of user.videos) {
+      for (let video of videos) {
         const resultObj = setVideoData(video as any);
         feedData.push(resultObj);
       }
       setVideos(feedData);
     } else {
-      alert('Cant login');
+      alert('Cant get video');
     }
   };
   const login = () => {
     const _function = async () => {
       const dest = globalConfig.API_URL + '/user/login';
-      console.log(dest);
       const options = {
         method: 'POST',
         headers: {
@@ -296,23 +301,24 @@ const Me: React.FC = () => {
     return (
       <VideoGrid
         videos={videos}
-        selectedVid={selectedVid}
-        setSelectedVid={setSelectedVid}
+        // selectedVid={selectedVid}
+        // setSelectedVid={setSelectedVid}
       />
     );
   };
   const renderProfile = () => {
     return (
-      <ScrollView
-        contentContainerStyle={{ flex: 1 }}
-        refreshControl={
-          <RefreshControl
-            onRefresh={() => {
-              login();
-            }}
-            refreshing={refreshing}
-          />
-        }
+      <View
+        style={{ flex: 1 }}
+        // contentContainerStyle={{ flex: 1 }}
+        // refreshControl={
+        //   <RefreshControl
+        //     onRefresh={() => {
+        //       login();
+        //     }}
+        //     refreshing={refreshing}
+        //   />
+        // }
       >
         <Container>
           <Header>
@@ -371,9 +377,9 @@ const Me: React.FC = () => {
               </StatsText>
             </Content>
           </ScrollView>
-          {showVids && renderGrid()}
         </Container>
-      </ScrollView>
+        {showVids && videos?.length > 0 && renderGrid()}
+      </View>
     );
   };
   const renderLogin = () => {

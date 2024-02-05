@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { globalConfig } from '../../../global';
 
 import { Image, ScrollView, StyleSheet, Text, Button } from 'react-native';
@@ -23,13 +23,16 @@ import {
 } from './styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import UserContext from '../../ContextManager/ContextProvider';
 
 //@ts-ignore
 const UserProfile = ({ route }) => {
+  const { token } = useContext(UserContext);
   const [email, setEmail] = useState(route.params.email);
   const [avatarString, setAvatarString] = useState('');
   const [username, setUsername] = useState('');
   const [bio, setBio] = useState('');
+  const [videos, setVideos] = useState([]);
 
   const [followings, setFollowings] = useState(0);
   const [followers, setFollowers] = useState(0);
@@ -50,7 +53,18 @@ const UserProfile = ({ route }) => {
       func_();
     };
   }, []);
-  const getVideo = () => {};
+  const getVideos = async () => {
+    const url = globalConfig.API_URL + '/videos/';
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      setVideos(data.videos);
+    } else {
+      alert('Cant get user videos');
+    }
+  };
   const navigation = useNavigation();
   return (
     <Container>
@@ -103,7 +117,7 @@ const UserProfile = ({ route }) => {
           <ProfileColumn>
             <ProfileEdit>
               <ProfileText>
-                <Button title="See All videos" onPress={getVideo} />
+                <Button title="See All videos" onPress={getVideos} />
               </ProfileText>
             </ProfileEdit>
           </ProfileColumn>
