@@ -70,7 +70,7 @@ const AppRoutes: React.FC = () => {
           ),
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Discover"
         component={Discover}
         options={{
@@ -79,7 +79,7 @@ const AppRoutes: React.FC = () => {
             <AntDesign name="search1" size={24} color={color} />
           ),
         }}
-      /> */}
+      />
       <Tab.Screen
         name="Upload"
         children={() => <UploadVid />}
