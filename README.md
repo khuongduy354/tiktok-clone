@@ -1,7 +1,7 @@
-<h1 align="center">
-<img alt="tiktokclone" title="tiktokclone" src="https://res.cloudinary.com/matheuscastroweb/image/upload/v1588992052/tiktok-clone/tiktok_x9nihm.png" width="100px" />
-    <br>
     TikTok Clone
+<img alt="tiktokclone" title="tiktokclone" src="https://res.cloudinary.com/matheuscastroweb/image/upload/v1588992052/tiktok-clone/tiktok_x9nihm.png" width="100px" />
+<h1 align="center">
+    <br>
 </h1>
 
 <h4 align="center">
@@ -9,7 +9,7 @@ Contact me at matheuscastroweb@gmail.com to about more.
 </h4>
 
 <h4 align="center">
-Clone of the TikTok app layout. 
+Clone of the TikTok app layout.
 </h4>
 
 <p align="center">

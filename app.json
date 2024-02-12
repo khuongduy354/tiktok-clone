@@ -3,10 +3,13 @@
     "name": "Tóp Tóp",
     "slug": "ticktopcloneapp",
     "privacy": "public",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/icon.jpg",
+    "icon": "./src/assets/icon.png",
     "splash": {
       "image": "./src/assets/splash.png",
       "resizeMode": "cover",
@@ -15,12 +18,19 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "package": "com.duy.topstops"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6f987f28-61c3-4fa0-9481-cf1a9e649e3c"
+      }
     }
   }
 }

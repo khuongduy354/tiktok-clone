@@ -34,6 +34,7 @@ import { globalConfig } from '../../../../global';
 
 import { Item } from '../../../@types/VideoType';
 import UserContext from '../../../ContextManager/ContextProvider';
+import { toHttps } from '../../../helper/toHttps';
 interface Props {
   play: boolean;
   item: Item;
@@ -54,14 +55,16 @@ const Feed: React.FC<Props> = ({
 
   const [isLiked, setIsLiked] = useState(item.likes.includes(userId));
   const [likes, setLikes] = useState(item.likes);
-  const [isVid, setIsVid] = useState(true);
+  const [isVid, setIsVid] = useState(false);
 
   const [commentMode, setCommentMode] = useState(false);
   const [commentState, setCommentState] = useState(item.comments);
 
   const [settingMode, setSettingMode] = useState(false);
   // useEffect(() => {
-  //   setIsVid(item.uri.includes('.mp4'));
+  //   const parts = item.uri.split('/');
+  //   const filename = parts[parts.length - 1];
+  //   console.log(filename);
   // }, [item.uri]);
 
   const handleLike = () => {
@@ -139,13 +142,27 @@ const Feed: React.FC<Props> = ({
               <Text style={{ color: 'white' }}>Out</Text>
             </TouchableOpacity>
           )}
-          <Container>
-            {isVid ? (
+          <Container
+            style={{ display: 'flex', flexDirection: 'column', flex: 1 }}
+          >
+            {!isVid ? (
+              <Image
+                onError={e => {
+                  setIsVid(true);
+                }}
+                source={{ uri: toHttps(item.uri) }}
+                style={{ flex: 1 }}
+              />
+            ) : (
               <Video
+                // onError={e => {
+                //   setIsVid(false);
+                // }}
+                style={{ flex: 1 }}
                 source={
                   play
                     ? {
-                        uri: item.uri,
+                        uri: toHttps(item.uri),
                       }
                     : { uri: '' }
                 }
@@ -155,18 +172,6 @@ const Feed: React.FC<Props> = ({
                 resizeMode="cover"
                 shouldPlay={play}
                 isLooping
-                style={{
-                  width: '100%',
-                  height: '100%',
-                }}
-              />
-            ) : (
-              <Image
-                style={{
-                  width: '100%',
-                  height: '100%',
-                }}
-                source={{ uri: item.uri }}
               />
             )}
           </Container>

@@ -21,11 +21,10 @@
     "expo-image-picker": "~14.7.1",
     "expo-linear-gradient": "~12.7.1",
     "install": "^0.13.0",
-    "lottie-react-native": "^6.6.0",
+    "lottie-react-native": "6.5.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "0.73.2",
-    "react-native-auth0": "^2.13.0",
+    "react-native": "0.73.4",
     "react-native-awesome-comments": "^1.1.0",
     "react-native-document-picker": "^8.0.0",
     "react-native-fs": "^2.19.0",
@@ -42,10 +41,12 @@
     "react-native-web": "~0.19.6",
     "styled-components": "^5.0.1"
   },
+  "resolutions": {
+    "@expo/config-plugins": "~7.8.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@types/react": "~18.2.45",
-    "@types/react-native": "~0.64.12",
     "@types/styled-components": "^5.1.0",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",

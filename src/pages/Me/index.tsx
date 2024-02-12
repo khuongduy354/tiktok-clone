@@ -40,6 +40,7 @@ import { Video } from 'expo-av';
 import { setVideoData } from '../../helper/setVideo';
 import ViewPager from 'react-native-pager-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { toHttps } from '../../helper/toHttps';
 
 const Me: React.FC = () => {
   const [tempPassword, setTempPassword] = useState('123456');
@@ -337,7 +338,7 @@ const Me: React.FC = () => {
                   }).image
                 }
                 source={{
-                  uri: avatarString,
+                  uri: toHttps(avatarString),
                 }}
               />
               <Username>{email}</Username>
